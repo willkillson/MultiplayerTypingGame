@@ -6,7 +6,7 @@
 
         for (let i = 0; i < 10; i++) {
             let unit = new Unit();
-            unit.init(600*Math.random(), 800*Math.random(), 1, 1,"Alavarius-"+i);
+            unit.init(600*Math.random(), 800*Math.random(), 5*Math.random(), 5*Math.random(),"Alavarius-"+i,600,800);
             units.push(unit);
         }
         console.log(units);
@@ -30,18 +30,42 @@ function Unit() {
     this.position;
     this.velocity;
 
-    this.init = function(x,y,velx,vely,name){
+    this.boundx;
+    this.boundy;
+
+    this.init = function(x,y,velx,vely,name,bx,by){
         this.position = new Vec2(x, y);
         this.velocity = new Vec2(velx, vely);
         this.name = name;
+        this.boundx = bx;
+        this.boundy = by;
     }
     this.update = function () {
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
+
+        //bounds x right side
+        if (this.position.x >= this.boundx) {
+            this.position.x = this.boundx;
+            this.velocity.x = this.velocity.x*-1;
+        }
+        if (this.position.x <= 0) {
+            this.position.x = 0;
+            this.velocity.x = this.velocity.x * -1;
+        }
+        if (this.position.y >= this.boundy) {
+            this.position.y = this.boundy;
+            this.velocity.y = this.velocity.y * -1;
+        }
+        if (this.position.y <= 0) {
+            this.position.y = 0;
+            this.velocity.y = this.velocity.y * -1;
+        }
+
     }
     this.draw = function () {
         ctx.beginPath();
-        ctx.font = "15px Arial";
+        ctx.font = "11px Arial";
         ctx.fillStyle = "black";
         ctx.fillText(this.name, this.position.x, this.position.y);
     }
