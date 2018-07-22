@@ -13,12 +13,11 @@
     }
     this.updateModel = function () {
 
+        for (let i = 0; i < units.length; i++) {
+            units[i].update();
+        }
     }
     this.composeFrame = function () {
-        //ctx.beginPath();
-        //ctx.font = "30px Arial";
-        //ctx.fillStyle = "black";
-        //ctx.fillText("Hellow World!", 400, 50);
         for (let i = 0; i < units.length; i++) {
             units[i].draw();
         }
