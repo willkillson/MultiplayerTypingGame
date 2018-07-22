@@ -21,6 +21,7 @@ function Graphics() {
         canvas.width = this.canvasWidth;
         canvas.height = this.canvasHeight;
         game = new Game();
+        game.init();
     }
 
     function mainLoop() {
