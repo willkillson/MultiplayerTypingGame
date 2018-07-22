@@ -1,26 +1,57 @@
-﻿function Game() {
+﻿
+function Game() {
     var units = new Array();
+
+    var inputTextValue = "";//creates a global Javascript variable
+    var processText = "";
+
+    window.onkeyup = keyup;//creates a listener for when you press a key
+
+
+    function keyup(e) {        
+        if (e.keyCode == 13) {
+            processText = inputTextValue;
+            inputTextValue = "";
+
+
+        }
+        else {
+            inputTextValue += String.fromCharCode(e.keyCode);
+        }
+    }
+
+
     this.init = function () {
         //this.canvasHeight = 800;
         //this.canvasWidth = 600;
 
         for (let i = 0; i < 10; i++) {
             let unit = new Unit();
-            unit.init(600*Math.random(), 800*Math.random(), 5*Math.random(), 5*Math.random(),"Alavarius-"+i,600,800);
+            unit.init(600*Math.random(), 800*Math.random(), 1*Math.random(), 1*Math.random(),"Q"+i,600,800);
             units.push(unit);
         }
-        console.log(units);
+
     }
     this.updateModel = function () {
 
         for (let i = 0; i < units.length; i++) {
-            units[i].update();
+            if (units[i].name == processText) {
+                console.log("Killing " + units[i].name);
+                processText = "";
+                units.splice(i, 1);
+            }
+            else {
+                units[i].update();
+            }
+ 
         }
+
     }
     this.composeFrame = function () {
         for (let i = 0; i < units.length; i++) {
             units[i].draw();
         }
+
     }
 
 }
@@ -33,12 +64,16 @@ function Unit() {
     this.boundx;
     this.boundy;
 
+    this.isAlive;
+
     this.init = function(x,y,velx,vely,name,bx,by){
         this.position = new Vec2(x, y);
         this.velocity = new Vec2(velx, vely);
         this.name = name;
         this.boundx = bx;
         this.boundy = by;
+
+        this.isAlive = 1;
     }
     this.update = function () {
         this.position.x += this.velocity.x;
