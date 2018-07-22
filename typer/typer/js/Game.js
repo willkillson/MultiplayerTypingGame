@@ -1,25 +1,25 @@
-﻿
-function Game() {
-    var units = new Array();
+﻿var inputTextValue = "";//creates a global Javascript variable
+var processText = "";
 
-    var inputTextValue = "";//creates a global Javascript variable
-    var processText = "";
+window.onkeyup = keyup;//creates a listener for when you press a key
 
-    window.onkeyup = keyup;//creates a listener for when you press a key
-
-
-    function keyup(e) {        
-        if (e.keyCode == 13) {
-            processText = inputTextValue;
-            inputTextValue = "";
+function keyup(e) {
+    if (e.keyCode == 13) {
+        processText = inputTextValue;
+        inputTextValue = "";
 
 
-        }
-        else {
-            inputTextValue += String.fromCharCode(e.keyCode);
-        }
     }
+    else {
+        inputTextValue += String.fromCharCode(e.keyCode);
+    }
+}
 
+function Game() {
+
+    var inputTextSize = 30;
+    var textPos = new Vec2(100 ,700);
+    var units = new Array();
 
     this.init = function () {
         //this.canvasHeight = 800;
@@ -30,6 +30,8 @@ function Game() {
             unit.init(600*Math.random(), 800*Math.random(), 1*Math.random(), 1*Math.random(),"Q"+i,600,800);
             units.push(unit);
         }
+
+
 
     }
     this.updateModel = function () {
@@ -51,6 +53,12 @@ function Game() {
         for (let i = 0; i < units.length; i++) {
             units[i].draw();
         }
+
+        ctx.beginPath();
+
+        ctx.font = "" + inputTextSize+"px Arial";
+        ctx.fillStyle = "blue";
+        ctx.fillText(inputTextValue, textPos.x, textPos.y);
 
     }
 
