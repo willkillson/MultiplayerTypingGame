@@ -27,7 +27,7 @@ function Graphics() {
     }
 
     function mainLoop() {
-        deltaTime = timeTwo - timeOne;
+
         timeOne = performance.now();
 
         //console.log(deltaTime);
@@ -37,6 +37,7 @@ function Graphics() {
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);//clears frame
         game.composeFrame();
         timeTwo = performance.now();
+        deltaTime = timeTwo - timeOne;
         requestAnimationFrame(mainLoop);
     }
     requestAnimationFrame(mainLoop);

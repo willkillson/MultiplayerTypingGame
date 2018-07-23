@@ -3,17 +3,22 @@ var processText = "";
 
 window.onkeyup = keyup;//creates a listener for when you press a key
 
+var fire = new Howl({
+    src: ['http://soundbible.com/grab.php?id=1998&type=mp3']
+});
+
+
+
 function keyup(e) {
     if (e.keyCode == 13) {
-        playSound(1);
         processText = inputTextValue;
         inputTextValue = "";
 
-
     }
     else {
-        
+        fire.play();
         inputTextValue += String.fromCharCode(e.keyCode);
+
     }
 }
 
@@ -199,31 +204,4 @@ function Dot() {
 function Vec2(x, y) {
     this.x = x;
     this.y = y;
-}
-
-
-function sound(src) {
-    this.sound = document.createElement("audio");
-    this.sound.src = src;
-    this.sound.setAttribute("preload", "auto");
-    this.sound.setAttribute("controls", "none");
-    this.sound.style.display = "none";
-    document.body.appendChild(this.sound);
-    this.play = function () {
-        this.sound.play();
-    }
-    this.stop = function () {
-        this.sound.pause();
-    }
-}
-
-
-var sound = new Audio("http://soundbible.com/grab.php?id=1998&type=wav");
-sound.preload = 'auto';
-sound.load();
-
-function playSound(volume) {
-    var click = sound.cloneNode();
-    click.volume = volume;
-    click.play();
 }
