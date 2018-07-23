@@ -3,20 +3,26 @@ var processText = "";
 
 window.onkeyup = keyup;//creates a listener for when you press a key
 
+
+
 var fire = new Howl({
-    src: ['http://soundbible.com/grab.php?id=1998&type=mp3']
+    src: ['https://s1.vocaroo.com/media/download_temp/Vocaroo_s1wV49PmAmcq.mp3']
 });
 
+var reload = new Howl({
 
+    src: ['https://s1.vocaroo.com/media/download_temp/Vocaroo_s1l4XKouwgGw.mp3']
+});
 
 function keyup(e) {
     if (e.keyCode == 13) {
         processText = inputTextValue;
         inputTextValue = "";
-
+        reload.play();
     }
     else {
         fire.play();
+        console.log("Playing fire sound");
         inputTextValue += String.fromCharCode(e.keyCode);
 
     }
