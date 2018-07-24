@@ -1,21 +1,4 @@
 ﻿
-
-var fire = new Howl({
-    src: ['https://s1.vocaroo.com/media/download_temp/Vocaroo_s1wV49PmAmcq.mp3']
-});
-
-var reload = new Howl({
-
-    src: ['https://s1.vocaroo.com/media/download_temp/Vocaroo_s1l4XKouwgGw.mp3']
-});
-
-var squish = new Howl({
-
-    src: ['https://s0.vocaroo.com/media/download_temp/Vocaroo_s0pREe78G5sf.mp3']
-});
-
-
-
 function Game() {
 
     var level = 1;
@@ -43,16 +26,10 @@ function Game() {
     }
     this.updateModel = function () {
 
-        if (units.length == 0) {
-            level++;
-            for (let i = 0; i < level; i++) {
-                let unit = new Unit();
-                unit.init(600 * Math.random(), 800 * Math.random(), level * Math.random(), level* Math.random(), "Q" + i, 600, 800);
-                units.push(unit);
-            }
-        }
+
         for (let i = 0; i < units.length; i++) {
             if (units[i].name == processText) {
+                player.target =  units[i];
                 console.log("Killing " + units[i].name);
                 squish.play();
                 processText = "";
@@ -61,10 +38,20 @@ function Game() {
             else {
                 units[i].update();
             }
- 
+
+        }
+        player.update();
+
+        if (units.length == 0) {
+            level++;
+            for (let i = 0; i < level; i++) {
+                let unit = new Unit();
+                unit.init(600 * Math.random(), 800 * Math.random(), level * Math.random(), level* Math.random(), "Q" + i, 600, 800);
+                units.push(unit);
+            }
         }
 
-        player.update();
+
 
 
     }
@@ -167,6 +154,8 @@ function Player() {
     this.boundx;
     this.boundy;
 
+    this.target = null;
+
     this.isAlive;
 
     this.init = function (x, y, bx, by) {
@@ -219,6 +208,18 @@ function Player() {
     }
     this.draw = function () {
 
+        if (this.target !=null) {
+            ctx.beginPath();
+            ctx.strokeStyle = 'purple';
+            ctx.moveTo(this.position.x, this.position.y);
+            ctx.lineTo(this.target.position.x, this.target.position.y);
+            ctx.stroke();
+
+        }
+
+
+
+        
         ctx.beginPath();
         ctx.strokeStyle = 'green';
         ctx.beginPath();
