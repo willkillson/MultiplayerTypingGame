@@ -129,17 +129,17 @@ function Game() {
         }
     }
     this.composeFrame = function () {
-        for (let i = 0; i < units.length; i++) {
-            units[i].draw();
-        }
 
 
+        level.draw();
 
 
         ui.draw();
-        level.draw();
-        player.draw();
 
+        player.draw();
+        for (let i = 0; i < units.length; i++) {
+            units[i].draw();
+        }
 
 
 
@@ -192,8 +192,11 @@ function Level() {
         ctx.fillStyle = "red";
         ctx.fillText("Level - " + this.level, 850, 50);
 
-
-
+        //background
+        ctx.fillStyle = `rgba(42, 55, 86, 1)`;
+        ctx.beginPath();
+        ctx.rect(0, 0, canvasDem, canvasDem);
+        ctx.fill();
         
 
 
@@ -213,6 +216,10 @@ function Level() {
             ctx.lineTo(canvasDem, i);
             ctx.stroke();
         }
+
+
+
+
 
         //boundary
         ctx.beginPath();
@@ -313,10 +320,19 @@ function Unit() {
     }
     this.draw = function () {
 
+
+        //avatar
+
+        ctx.fillStyle = `rgba(249, 170, 0, 1)`;
+        ctx.beginPath();
+        ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
+        ctx.closePath();
+        ctx.fill();
+
         //display name
         ctx.beginPath();
         ctx.font = "20px Arial";
-        ctx.fillStyle = "black";
+        ctx.fillStyle = `rgba(249, 170, 0, 1)`;
         ctx.fillText(this.name, this.position.x - 25, this.position.y - 30);
 
 
@@ -327,12 +343,6 @@ function Unit() {
         ctx.fillText("HP - " + this.currentHealth, this.position.x - 22, this.position.y + 5);
 
 
-        //avatar
-        ctx.beginPath();
-        ctx.strokeStyle = 'red';
-        ctx.beginPath();
-        ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
-        ctx.stroke();
     }
 
     this.checkIfHittingPlayer = function (player) {
@@ -489,24 +499,25 @@ function Player() {
 
             //display word count
             ctx.beginPath();
-            ctx.font = "10px Arial";
-            ctx.fillStyle = "black";
+            ctx.font = "20px Arial";
+            ctx.fillStyle = `rgba(249, 170, 0, 1)`;
             ctx.fillText("word: " + this.target.currentHealth + " - " + this.target.health, this.position.x - 25, this.position.y - 60);
         }
 
-
+        //display character avatar
+        ctx.fillStyle = 'green';
+        ctx.beginPath();
+        ctx.arc(this.position.x, this.position.y, 25, 0, 2 * Math.PI);
+        ctx.closePath();
+        ctx.fill()
         //display health
         ctx.beginPath();
         ctx.font = "13px Arial";
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "white";
         ctx.fillText("HP - " + this.currentHealth, this.position.x - 22, this.position.y + 5);
 
-        //display character avatar
-        ctx.beginPath();
-        ctx.strokeStyle = 'green';
-        ctx.beginPath();
-        ctx.arc(this.position.x, this.position.y, 25, 0, 2 * Math.PI);
-        ctx.stroke();
+
+
     }
     this.takeDamage = function (amount) {
         this.currentHealth -= amount;
