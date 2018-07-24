@@ -1,4 +1,21 @@
 ﻿
+/*
+ * GameDesign
+ * - movement que
+ *      So we can place multiple movements in a que, while we type.
+ *      Movement nodes will be discrete, but it will take a specific amount of time to get
+ *      to certain nodes.
+ *      
+ * - 11x11 movement nodes debateable
+ * 
+ * 
+ * 
+ * 
+ * 
+ */ 
+
+
+
 /*NOTES
  * 
  * Abilities
@@ -141,7 +158,7 @@ function UserInterface() {
         //keyboardInput
         ctx.beginPath();
         ctx.font = "" + this.inputTextSize + "px Arial";
-        ctx.fillStyle = "blue";
+        ctx.fillStyle = "gray";
         ctx.fillText(inputTextValue, this.textPos.x, this.textPos.y);
 
     }
@@ -305,16 +322,9 @@ function Player() {
                 this.target = null;
 
             }
-
-
-     
-
         }
 
         if (this.target != null) {
-            //console.log(processText);
-
-            //console.log(this.target.dictionary[1]);
             if (this.target.dictionary[this.target.currentHealth - 1] == processText) {
                 this.target.currentHealth--;
                 processText = "";
@@ -327,6 +337,7 @@ function Player() {
         switch (processText) {
             case "_PlayerMovement_right":
                 processText = "";
+                
                 this.position.x += 50;
                 break;
             case "_PlayerMovement_up":
@@ -369,6 +380,7 @@ function Player() {
         //}
 
     }
+
     this.draw = function () {
 
         if (this.target != null) {
