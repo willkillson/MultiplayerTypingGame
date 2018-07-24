@@ -126,6 +126,17 @@ function Level() {
 
         //boundary
         ctx.beginPath();
+        ctx.strokeStyle = 'brown';
+        ctx.moveTo(0, 0);
+        ctx.lineTo(600, 0);
+        ctx.moveTo(600, 0);
+        ctx.lineTo(600, 800);
+        ctx.moveTo(600, 800);
+        ctx.lineTo(0, 800);
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, 800);
+
+        ctx.stroke();
 
 
     }
