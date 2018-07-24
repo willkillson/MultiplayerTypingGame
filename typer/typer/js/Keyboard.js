@@ -29,7 +29,7 @@ function keyup(e) {
     }
 
     if (e.keyCode == 8) {
-        processText = "_PlayerMovement_down";
+        inputTextValue = inputTextValue.slice(0, inputTextValue.length - 1);
         return;
     }
 
