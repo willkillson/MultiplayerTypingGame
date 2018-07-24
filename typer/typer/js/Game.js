@@ -228,7 +228,7 @@ function Level() {
     }
 
     this.restart = function () {
-        this.level = 1;
+        this.level = 0;
     }
 }
 
@@ -449,12 +449,33 @@ function Player() {
             ctx.stroke();
 
 
+            //background for dictionary
+            ctx.beginPath();
+
+            //console.log(this.target.dictionary[this.target.dictionary.length - 1].length);
+
+
+
+
+            if (this.target.dictionary[this.target.currentHealth - 1]!=undefined) {
+                ctx.beginPath();
+                ctx.rect(this.position.x - 25, this.position.y - 48, this.target.dictionary[this.target.currentHealth - 1].length * 15, 20);
+                ctx.fillStyle = "white";
+                ctx.fill();
+            }
+
+
+
             //display dictionary
             ctx.beginPath();
             ctx.font = "20px Arial";
             ctx.fillStyle = "black";
             ctx.fillText(this.target.dictionary[this.target.currentHealth-1], this.position.x - 25, this.position.y - 30);
 
+
+            
+  
+            
 
             //display word count
             ctx.beginPath();
