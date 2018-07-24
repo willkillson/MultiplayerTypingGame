@@ -32,19 +32,24 @@ function keyup(e) {
     }
 
     if (e.keyCode == 37) {
-        inputTextValue = "_PlayerMovement_left";
+        processText = "_PlayerMovement_left";
         return;
     }
     if (e.keyCode == 38) {
-        inputTextValue = "_PlayerMovement_up";
+        processText = "_PlayerMovement_up";
         return;
     }
     if (e.keyCode == 39) {
-        inputTextValue = "_PlayerMovement_right";
+        processText = "_PlayerMovement_right";
         return;
     }
     if (e.keyCode == 40) {
-        inputTextValue = "_PlayerMovement_down";
+        processText = "_PlayerMovement_down";
+        return;
+    }
+
+    if (e.keyCode == 8) {
+        processText = "_PlayerMovement_down";
         return;
     }
 
@@ -132,6 +137,9 @@ function Game() {
 }
 
 function Unit() {
+
+    this.health;
+
     this.name;
     this.position;
     this.velocity;
@@ -148,7 +156,8 @@ function Unit() {
         this.boundx = bx;
         this.boundy = by;
 
-        this.isAlive = 1;
+        this.health = 5;//HARDCODE
+        this.isAlive = 1;//HARDCODE
     }
     this.update = function () {
         this.position.x += this.velocity.x;
@@ -177,7 +186,20 @@ function Unit() {
         ctx.beginPath();
         ctx.font = "20px Arial";
         ctx.fillStyle = "black";
-        ctx.fillText(this.name, this.position.x, this.position.y);
+        ctx.fillText(this.name, this.position.x - 25, this.position.y - 30);
+
+        ctx.beginPath();
+        ctx.font = "10px Arial";
+        ctx.fillStyle = "black";
+        ctx.fillText("HP - "+this.health, this.position.x-22, this.position.y+5);
+
+
+
+        ctx.beginPath();
+        ctx.strokeStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(this.position.x, this.position.y, 25, 0, 2 * Math.PI);
+        ctx.stroke();
     }
 
 }
@@ -199,21 +221,21 @@ function Player() {
     }
     this.update = function () {
 
-        switch (inputTextValue) {
+        switch (processText) {
             case "_PlayerMovement_right":
-                inputTextValue = "";
+                processText = "";
                 this.position.x += 40;
                 break;
             case "_PlayerMovement_up":
-                inputTextValue = "";
+                processText = "";
                 this.position.y -= 40;
                 break;
             case "_PlayerMovement_down":
-                inputTextValue = "";
+                processText = "";
                 this.position.y += 40;
                 break;
             case "_PlayerMovement_left":
-                inputTextValue = "";
+                processText = "";
                 this.position.x -= 40;
                 break;
         }
