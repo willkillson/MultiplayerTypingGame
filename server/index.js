@@ -10,7 +10,27 @@ var game = new Game();
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
-
+app.get('/asset/Dictionary.js', function (req, res) {
+    res.sendFile(__dirname + '/assets/Dictionary.js');
+});
+app.get('/assets/howler.js', function (req, res) {
+    res.sendFile(__dirname + '/assets/howler.js');
+});
+app.get('/assets/Sound.js', function (req, res) {
+    res.sendFile(__dirname + '/assets/Sound.js');
+});
+app.get('/assets/WilkiMath.js', function (req, res) {
+    res.sendFile(__dirname + '/assets/WilkiMath.js');
+});
+app.get('/assets/Keyboard.js', function (req, res) {
+    res.sendFile(__dirname + '/assets/Keyboard.js');
+});
+app.get('/assets/Game.js', function (req, res) {
+    res.sendFile(__dirname + '/assets/Game.js');
+});
+app.get('/assets/Graphics.js', function (req, res) {
+    res.sendFile(__dirname + '/assets/Graphics.js');
+});
 app.get('/assets/main.js', function (req, res) {
     res.sendFile(__dirname + '/assets/main.js');
 });

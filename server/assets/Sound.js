@@ -1,4 +1,6 @@
-﻿var fire = new Howl({
+﻿console.log("Sound.js loaded");
+
+var fire = new Howl({
     src: ['https://s1.vocaroo.com/media/download_temp/Vocaroo_s1wV49PmAmcq.mp3']
 });
 

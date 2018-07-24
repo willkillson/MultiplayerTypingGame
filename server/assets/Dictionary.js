@@ -1,4 +1,6 @@
-﻿//Dictionary
+﻿console.log("Dictionary.js loaded");
+
+//Dictionary
 
 var dictionary = new Array();
 

@@ -1,7 +1,4 @@
-﻿
+﻿console.log("main.js loaded");
 
-
-console.log("here it is!");
-
-//var main = new Graphics();
-//main.init();
+var main = new Graphics();
+main.init();

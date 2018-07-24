@@ -1,4 +1,6 @@
-﻿/*!
+﻿console.log("howler.js loaded");
+
+/*!
  *  howler.js v2.0.14
  *  howlerjs.com
  *

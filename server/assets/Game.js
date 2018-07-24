@@ -1,4 +1,4 @@
-﻿
+﻿console.log("Game.js loaded");
 /*
  * GameDesign
  * - movement que

@@ -1,4 +1,6 @@
-﻿var inputTextValue = "";//creates a global Javascript variable
+﻿console.log("Keyboard.js loaded");
+
+var inputTextValue = "";//creates a global Javascript variable
 var processText = "";
 window.onkeyup = keyup;//creates a listener for when you press a key
 
