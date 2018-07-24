@@ -1,4 +1,6 @@
-﻿var inputTextValue = "";//creates a global Javascript variable
+﻿
+
+var inputTextValue = "";//creates a global Javascript variable
 var processText = "";
 
 window.onkeyup = keyup;//creates a listener for when you press a key
@@ -14,18 +16,42 @@ var reload = new Howl({
     src: ['https://s1.vocaroo.com/media/download_temp/Vocaroo_s1l4XKouwgGw.mp3']
 });
 
+var squish = new Howl({
+
+    src: ['https://s0.vocaroo.com/media/download_temp/Vocaroo_s0pREe78G5sf.mp3']
+});
+
+
 function keyup(e) {
+    
     if (e.keyCode == 13) {
         processText = inputTextValue;
         inputTextValue = "";
         reload.play();
+        return;
     }
-    else {
-        fire.play();
-        console.log("Playing fire sound");
-        inputTextValue += String.fromCharCode(e.keyCode);
 
+    if (e.keyCode == 37) {
+        inputTextValue = "_PlayerMovement_left";
+        return;
     }
+    if (e.keyCode == 38) {
+        inputTextValue = "_PlayerMovement_up";
+        return;
+    }
+    if (e.keyCode == 39) {
+        inputTextValue = "_PlayerMovement_right";
+        return;
+    }
+    if (e.keyCode == 40) {
+        inputTextValue = "_PlayerMovement_down";
+        return;
+    }
+
+    fire.play();
+    console.log("Playing fire sound");
+    inputTextValue += String.fromCharCode(e.keyCode);
+    
 }
 
 function Game() {
@@ -35,8 +61,8 @@ function Game() {
     var textPos = new Vec2(100 ,700);
     var units = new Array();
 
+    var player = new Player();
 
-    var dots = new Array();
 
     this.init = function () {
         //this.canvasHeight = 800;
@@ -48,10 +74,9 @@ function Game() {
             units.push(unit);
         }
 
-        for (let i = 0; i < 100;i++)
+        player.init(600 / 2, 800 / 2, 600, 800);
 
-        dot = new Dot();
-        dot.init(500,400,0,0,600,800);
+
 
     }
     this.updateModel = function () {
@@ -64,11 +89,10 @@ function Game() {
                 units.push(unit);
             }
         }
-
-
         for (let i = 0; i < units.length; i++) {
             if (units[i].name == processText) {
                 console.log("Killing " + units[i].name);
+                squish.play();
                 processText = "";
                 units.splice(i, 1);
             }
@@ -78,6 +102,8 @@ function Game() {
  
         }
 
+        player.update();
+
 
     }
     this.composeFrame = function () {
@@ -86,7 +112,7 @@ function Game() {
         }
 
 
-        dot.draw();
+        player.draw();
 
 
         //keyboardInput
@@ -156,52 +182,68 @@ function Unit() {
 
 }
 
-function Dot() {
+function Player() {
     this.position;
-    this.velocity;
-
+    
     this.boundx;
     this.boundy;
 
     this.isAlive;
 
-    this.init = function (x, y, velx, vely, bx, by) {
+    this.init = function (x, y, bx, by) {
         this.position = new Vec2(x, y);
-        this.velocity = new Vec2(velx, vely);
         this.boundx = bx;
         this.boundy = by;
 
         this.isAlive = 1;
     }
     this.update = function () {
-        this.position.x += this.velocity.x;
-        this.position.y += this.velocity.y;
 
-        //bounds x right side
-        if (this.position.x >= this.boundx) {
-            this.position.x = this.boundx;
-            this.velocity.x = this.velocity.x * -1;
+        switch (inputTextValue) {
+            case "_PlayerMovement_right":
+                inputTextValue = "";
+                this.position.x += 40;
+                break;
+            case "_PlayerMovement_up":
+                inputTextValue = "";
+                this.position.y -= 40;
+                break;
+            case "_PlayerMovement_down":
+                inputTextValue = "";
+                this.position.y += 40;
+                break;
+            case "_PlayerMovement_left":
+                inputTextValue = "";
+                this.position.x -= 40;
+                break;
         }
-        if (this.position.x <= 0) {
-            this.position.x = 0;
-            this.velocity.x = this.velocity.x * -1;
-        }
-        if (this.position.y >= this.boundy) {
-            this.position.y = this.boundy;
-            this.velocity.y = this.velocity.y * -1;
-        }
-        if (this.position.y <= 0) {
-            this.position.y = 0;
-            this.velocity.y = this.velocity.y * -1;
-        }
+
+
+        ////bounds x right side
+        //if (this.position.x >= this.boundx) {
+        //    this.position.x = this.boundx;
+        //    this.velocity.x = this.velocity.x * -1;
+        //}
+        //if (this.position.x <= 0) {
+        //    this.position.x = 0;
+        //    this.velocity.x = this.velocity.x * -1;
+        //}
+        //if (this.position.y >= this.boundy) {
+        //    this.position.y = this.boundy;
+        //    this.velocity.y = this.velocity.y * -1;
+        //}
+        //if (this.position.y <= 0) {
+        //    this.position.y = 0;
+        //    this.velocity.y = this.velocity.y * -1;
+        //}
 
     }
     this.draw = function () {
 
         ctx.beginPath();
-        ctx.strokeStyle = 'blue';
-        ctx.moveTo(this.position.x, this.position.y);
-        ctx.lineTo(this.position.x + 1, this.position.y + 1);
+        ctx.strokeStyle = 'green';
+        ctx.beginPath();
+        ctx.arc(this.position.x, this.position.y, 25, 0, 2 * Math.PI);
         ctx.stroke();
     }
 
