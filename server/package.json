@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/willkillson/test#readme",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "socket.io": "^2.1.1"
   },
   "devDependencies": {
     "ws": "3.3.2"
