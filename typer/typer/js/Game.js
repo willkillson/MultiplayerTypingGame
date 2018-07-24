@@ -76,7 +76,7 @@ function Game() {
     }
     this.updateModel = function () {
 
-     
+
         if (player.isAlive == 0) {
             level.level = 0;
             units = [];
@@ -190,7 +190,6 @@ function UserInterface() {
 function Level() {
     this.level;
     this.textSizeLevelDisplay;
-    this.bounds = new Array();
 
     this.init = function (levelNum) {
         this.textSizeLevelDisplay = 30;
@@ -230,13 +229,6 @@ function Level() {
 
 
 
-        //board
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(249, 170, 0, 1)`;
-        ctx.beginPath();
-        ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fill();
 
 
         //boundary
@@ -265,29 +257,6 @@ function Level() {
     this.restart = function () {
         this.level = 0;
     }
-
-
-    var r1 =  [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0];
-    var r2 =  [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0];
-    var r3 =  [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0];
-    var r4 =  [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0];
-    var r5 =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    var r6 =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    var r7 =  [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0];
-    var r8 =  [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0];
-    var r9 =  [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0];
-    var r10 = [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0];
-
-    this.bounds.push(r1);
-    this.bounds.push(r2);
-    this.bounds.push(r3);
-    this.bounds.push(r4);
-    this.bounds.push(r5);
-    this.bounds.push(r6);
-    this.bounds.push(r7);
-    this.bounds.push(r8);
-    this.bounds.push(r9);
-    this.bounds.push(r10);
 }
 
 function Unit() {
