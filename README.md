@@ -1,4 +1,4 @@
 # test
 
-(https://willkillson.github.io/test/)[Hosted]
+https://willkillson.github.io/test/
 
