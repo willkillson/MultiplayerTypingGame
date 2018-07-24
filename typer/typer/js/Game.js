@@ -53,28 +53,28 @@
 
 
 
-
+var canvasDem = 900;
+var canvasCells = 15;
 
 function Game() {
 
-
+    
     var units = new Array();
 
     var player = new Player();
     var level = new Level();
     var ui = new UserInterface();
 
+
     this.init = function () {
-        //this.canvasHeight = 800;
-        //this.canvasWidth = 600;
 
         for (let i = 0; i < 1; i++) {
             let unit = new Unit();
-            unit.init(600*Math.random(), 800*Math.random(), 1*Math.random(), 1*Math.random(),"Q"+i,600,800);
+            unit.init(canvasDem*Math.random(), canvasDem*Math.random(), 1*Math.random(), 1*Math.random(),"Q"+i,canvasDem,canvasDem);
             units.push(unit);
         }
 
-        player.init(50, 50 , 600, 800);
+        player.init(canvasDem / canvasCells/2, canvasDem / canvasCells/2 , canvasDem, canvasDem);
         ui.init();
         level.init();
 
@@ -105,7 +105,7 @@ function Game() {
             level.level++;
             for (let i = 0; i < level.level; i++) {
                 let unit = new Unit();
-                unit.init(600 * Math.random(), 800 * Math.random(), level.level * Math.random(), level.level* Math.random(), "Q" + i, 600, 800);
+                unit.init(canvasDem * Math.random(), canvasDem * Math.random(), level.level * Math.random(), level.level* Math.random(), "Q" + i, canvasDem, canvasDem);
                 units.push(unit);
             }
         }
@@ -128,10 +128,10 @@ function Game() {
 
 
 
-        player.draw();
+
         ui.draw();
         level.draw();
-
+        player.draw();
 
 
 
@@ -180,18 +180,43 @@ function Level() {
         ctx.fillStyle = "red";
         ctx.fillText("Level - " + this.level, 450, 50);
 
+
+        //grid
+        ctx.beginPath();
+        ctx.strokeStyle = 'teal';
+
+        for (let i = canvasDem / canvasCells; i < canvasDem; i = i + canvasDem / canvasCells) {
+            ctx.moveTo(i, 0);
+
+            ctx.lineTo(i, canvasDem);
+            ctx.stroke();
+        }
+        for (let i = canvasDem / canvasCells; i < canvasDem; i = i + canvasDem / canvasCells) {
+            ctx.moveTo(0, i);
+
+            ctx.lineTo(canvasDem, i);
+            ctx.stroke();
+        }
+
         //boundary
         ctx.beginPath();
         ctx.strokeStyle = 'brown';
         ctx.moveTo(0, 0);
-        ctx.lineTo(600, 0);
-        ctx.moveTo(600, 0);
-        ctx.lineTo(600, 800);
-        ctx.moveTo(600, 800);
-        ctx.lineTo(0, 800);
-        ctx.moveTo(0, 0);
-        ctx.lineTo(0, 800);
+        ctx.lineTo(0, canvasDem);
+
+        ctx.moveTo(0, canvasDem);
+        ctx.lineTo(canvasDem, canvasDem);
+
+        ctx.moveTo(canvasDem, canvasDem);
+        ctx.lineTo(canvasDem, 0);
+
+        ctx.moveTo(canvasDem, 0);
+        ctx.lineTo(0, 0);
         ctx.stroke();
+
+
+
+
 
 
     }
@@ -218,7 +243,7 @@ function Unit() {
 
     this.init = function(x,y,velx,vely,name,bx,by){
         this.position = new Vec2(x, y);
-        this.velocity = new Vec2(velx, vely);
+        this.velocity = new Vec2(velx, vely-10);//HARDCODED
         this.name = name;
         this.boundx = bx;
         this.boundy = by;
@@ -253,14 +278,17 @@ function Unit() {
             this.position.x = this.radius;
             this.velocity.x = this.velocity.x * -1;
         }
-        if (this.position.y + this.radius >= this.boundy) {
+        //south check
+        if (this.position.y  >= this.boundy) {
             this.position.y = this.boundy - this.radius;
             this.velocity.y = this.velocity.y * -1;
         }
+
         if (this.position.y - this.radius <= 0) {
             this.position.y = this.radius;
             this.velocity.y = this.velocity.y * -1;
         }
+        //console.log("x,y(" + this.position.x +", " + this.position.y+")");
 
     }
     this.draw = function () {
@@ -337,20 +365,20 @@ function Player() {
         switch (processText) {
             case "_PlayerMovement_right":
                 processText = "";
-                
-                this.position.x += 50;
+
+                this.position.x += canvasDem / canvasCells;
                 break;
             case "_PlayerMovement_up":
                 processText = "";
-                this.position.y -= 50;
+                this.position.y -= canvasDem / canvasCells;
                 break;
             case "_PlayerMovement_down":
                 processText = "";
-                this.position.y += 50;
+                this.position.y += canvasDem / canvasCells;
                 break;
             case "_PlayerMovement_left":
                 processText = "";
-                this.position.x -= 50;
+                this.position.x -= canvasDem / canvasCells;
                 break;
             case "FIRE":
                 processText = "";
