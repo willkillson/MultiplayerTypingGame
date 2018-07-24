@@ -154,18 +154,24 @@ function Game() {
 
 function UserInterface() {
     this.inputTextSize;
-    this.textPos = new Vec2(100, 700);
+    this.textPos = new Vec2(50, 900);
 
     this.init = function () {
         this.inputTextSize = 30;
 
     }
-    this.draw = function(){
+    this.draw = function () {
+
+        //keyboard background
+        ctx.beginPath();
+        ctx.rect(this.textPos.x, this.textPos.y-35, 300, 50);
+        ctx.fillStyle = 'rgb(192,192,192,0.5)';
+        ctx.fill();
 
         //keyboardInput
         ctx.beginPath();
         ctx.font = "" + this.inputTextSize + "px Arial";
-        ctx.fillStyle = "gray";
+        ctx.fillStyle = "black";
         ctx.fillText(inputTextValue, this.textPos.x, this.textPos.y);
 
     }
@@ -184,7 +190,11 @@ function Level() {
         ctx.beginPath();
         ctx.font = "" + this.textSizeLevelDisplay + "px Arial";
         ctx.fillStyle = "red";
-        ctx.fillText("Level - " + this.level, 450, 50);
+        ctx.fillText("Level - " + this.level, 850, 50);
+
+
+
+        
 
 
         //grid
@@ -312,7 +322,7 @@ function Unit() {
 
         //display health
         ctx.beginPath();
-        ctx.font = "10px Arial";
+        ctx.font = "13px Arial";
         ctx.fillStyle = "black";
         ctx.fillText("HP - " + this.currentHealth, this.position.x - 22, this.position.y + 5);
 
@@ -487,7 +497,7 @@ function Player() {
 
         //display health
         ctx.beginPath();
-        ctx.font = "10px Arial";
+        ctx.font = "13px Arial";
         ctx.fillStyle = "black";
         ctx.fillText("HP - " + this.currentHealth, this.position.x - 22, this.position.y + 5);
 
