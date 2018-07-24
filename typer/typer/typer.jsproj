@@ -71,6 +71,7 @@
     <Content Include="js\Keyboard.js" />
     <Content Include="js\main.js" />
     <Content Include="css\default.css" />
+    <Content Include="js\Sound.js" />
     <Content Include="js\WilkiMath.js" />
     <Content Include="GUN_FIRE-GoodSoundForYou-820112263.wav" />
     <None Include="typer_TemporaryKey.pfx" />

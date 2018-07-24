@@ -28,19 +28,21 @@ function Game() {
 
 
         for (let i = 0; i < units.length; i++) {
+
+    
             if (units[i].name == processText) {
                 player.target =  units[i];
-                console.log("Killing " + units[i].name);
-                squish.play();
+                //console.log("Killing " + units[i].name);
+                //squish.play();
                 processText = "";
-                units.splice(i, 1);
-            }
-            else {
-                units[i].update();
-            }
+      
+                //units.splice(i, 1);
 
+            }
+            units[i].update();
         }
         player.update();
+
 
         if (units.length == 0) {
             level++;
@@ -53,7 +55,14 @@ function Game() {
 
 
 
+        for (let i = 0; i < units.length; i++) {
+            if (units[i].isAlive == 0) {
 
+
+                units.splice(i, 1);
+
+            }
+        }
     }
     this.composeFrame = function () {
         for (let i = 0; i < units.length; i++) {
@@ -82,7 +91,10 @@ function Game() {
 
 function Unit() {
 
+    this.currentHealth;
     this.health;
+
+    this.dictionary;
 
     this.name;
     this.position;
@@ -100,10 +112,23 @@ function Unit() {
         this.boundx = bx;
         this.boundy = by;
 
-        this.health = 5;//HARDCODE
+        this.health = 2;//HARDCODE
+        this.currentHealth = this.health;
         this.isAlive = 1;//HARDCODE
+
+
+        this.dictionary = new Array();
+        for (let i = 0; i < this.health; i++) {
+            this.dictionary.push(dictionary[Math.floor(dictionary.length * Math.random())]);
+        }
+        console.log(this.dictionary);
     }
     this.update = function () {
+        if (this.currentHealth <= 0) {
+            this.isAlive = 0;
+            console.log(this.name +" is dead");
+        }
+
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
 
@@ -127,18 +152,22 @@ function Unit() {
 
     }
     this.draw = function () {
+
+        //display name
         ctx.beginPath();
         ctx.font = "20px Arial";
         ctx.fillStyle = "black";
         ctx.fillText(this.name, this.position.x - 25, this.position.y - 30);
 
+
+        //display health
         ctx.beginPath();
         ctx.font = "10px Arial";
         ctx.fillStyle = "black";
-        ctx.fillText("HP - "+this.health, this.position.x-22, this.position.y+5);
+        ctx.fillText("HP - " + this.currentHealth, this.position.x - 22, this.position.y + 5);
 
 
-
+        //avatar
         ctx.beginPath();
         ctx.strokeStyle = 'red';
         ctx.beginPath();
@@ -150,6 +179,9 @@ function Unit() {
 
 function Player() {
     this.position;
+
+    this.currentHealth;
+    this.health;
     
     this.boundx;
     this.boundy;
@@ -158,14 +190,44 @@ function Player() {
 
     this.isAlive;
 
+
+
     this.init = function (x, y, bx, by) {
         this.position = new Vec2(x, y);
         this.boundx = bx;
         this.boundy = by;
 
+        this.health = 10;
+        this.currentHealth = this.health;
+
         this.isAlive = 1;
     }
     this.update = function () {
+
+        if (this.target != null) {
+            if (this.target.isAlive == 0) {
+
+                this.target = null;
+
+            }
+
+
+     
+
+        }
+
+        if (this.target != null) {
+            //console.log(processText);
+
+            //console.log(this.target.dictionary[1]);
+            if (this.target.dictionary[this.target.currentHealth - 1] == processText) {
+                this.target.currentHealth--;
+                processText = "";
+            }
+       
+        }
+
+
 
         switch (processText) {
             case "_PlayerMovement_right":
@@ -183,6 +245,12 @@ function Player() {
             case "_PlayerMovement_left":
                 processText = "";
                 this.position.x -= 40;
+                break;
+            case "FIRE":
+                processText = "";
+                if (this.target != null) {
+                    this.target.currentHealth -= 1;
+                }
                 break;
         }
 
@@ -215,11 +283,29 @@ function Player() {
             ctx.lineTo(this.target.position.x, this.target.position.y);
             ctx.stroke();
 
+
+            //display dictionary
+            ctx.beginPath();
+            ctx.font = "20px Arial";
+            ctx.fillStyle = "black";
+            ctx.fillText(this.target.dictionary[this.target.currentHealth-1], this.position.x - 25, this.position.y - 30);
+
+
+            //display word count
+            ctx.beginPath();
+            ctx.font = "10px Arial";
+            ctx.fillStyle = "black";
+            ctx.fillText("word: " + this.target.currentHealth + " - " + this.target.health, this.position.x - 25, this.position.y - 60);
         }
 
 
+        //display health
+        ctx.beginPath();
+        ctx.font = "10px Arial";
+        ctx.fillStyle = "black";
+        ctx.fillText("HP - " + this.currentHealth, this.position.x - 22, this.position.y + 5);
 
-        
+        //display character avatar
         ctx.beginPath();
         ctx.strokeStyle = 'green';
         ctx.beginPath();
@@ -232,4 +318,24 @@ function Player() {
 function Vec2(x, y) {
     this.x = x;
     this.y = y;
+}
+
+
+
+var dictionary = new Array();
+
+dictionary.push("grouchy");
+dictionary.push("care");
+dictionary.push("match");
+dictionary.push("weary");
+dictionary.push("snails");
+dictionary.push("market");
+dictionary.push("mature");
+dictionary.push("lethal");
+dictionary.push("abortive");
+dictionary.push("poop");
+dictionary.push("crap");
+dictionary.push("pain");
+for (let i = 0; i < dictionary.length; i++) {
+    dictionary[i] = dictionary[i].toUpperCase();
 }
