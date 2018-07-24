@@ -384,11 +384,10 @@ function Player() {
     this.target = null;
 
     this.isAlive;
-
-
+   
 
     this.init = function (x, y, bx, by) {
-        this.spawnPosition = new Vec2(x, y);
+        this.spawnPosition = new Vec2(120, 120);
         this.position = this.spawnPosition;
         this.boundx = bx;
         this.boundy = by;
@@ -401,7 +400,7 @@ function Player() {
         this.isAlive = 1;
     }
     this.update = function () {
-
+        
         if (this.target != null) {
             if (this.target.isAlive == 0) {
 
