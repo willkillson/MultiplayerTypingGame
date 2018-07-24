@@ -1,4 +1,8 @@
 ﻿console.log("Game.js loaded");
+
+var socket = io();
+var x = 0;
+
 /*
  * GameDesign
  * - movement que
@@ -59,17 +63,17 @@ var canvasCells = 10;
 function Game() {
 
     
-    var units;
+    var units = new Array();
     //var player = new Player();
-    var level;
-    var ui;
+    var level = new Level();
+    var ui = new UserInterface();
 
 
     this.init = function () {
 
         //player.init(canvasDem / canvasCells / 2, canvasDem / canvasCells / 2, canvasDem, canvasDem);
-        //ui.init();
-        //level.init();
+        ui.init();
+        level.init();
 
 
 
@@ -83,15 +87,15 @@ function Game() {
         //    player.respawn();
         //}
 
-        ////remake new units and increase level
-        //if (units.length == 0) {
-        //    level.level++;
-        //    for (let i = 0; i < level.level; i++) {
-        //        let unit = new Unit();
-        //        unit.init(canvasDem * Math.random(), canvasDem * Math.random(), level.level * Math.random(), level.level * Math.random(), "Q" + i, canvasDem, canvasDem);
-        //        units.push(unit);
-        //    }
-        //}
+        //remake new units and increase level
+        if (units.length == 0) {
+            level.level++;
+            for (let i = 0; i < level.level; i++) {
+                let unit = new Unit();
+                unit.init(canvasDem * Math.random(), canvasDem * Math.random(), level.level * Math.random(), level.level * Math.random(), "Q" + i, canvasDem, canvasDem);
+                units.push(unit);
+            }
+        }
 
 
 
@@ -127,6 +131,31 @@ function Game() {
         //        units.splice(i, 1);
         //    }
         //}
+
+
+        //$(function () {
+        //    var socket = io();
+        //    $('form').submit(function () {
+        //        socket.emit('chat message', $('#m').val());
+        //        $('#m').val('');
+        //        return false;
+        //    });
+        //    socket.on('chat message', function (msg) {
+        //        $('#messages').append($('<li>').text(msg));
+        //    });
+        //});
+
+       // socket.on('hello', x);
+        
+        socket.emit('frame', 
+            x
+        );
+        
+
+
+
+        x++;
+
     }
     this.composeFrame = function () {
 

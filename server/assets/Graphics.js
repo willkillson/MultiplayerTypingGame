@@ -12,6 +12,8 @@ function Graphics() {
 
     var fps;
 
+    var runningTime=0;
+
     var deltaTime;
     var timeOne;
     var timeTwo;
@@ -26,24 +28,29 @@ function Graphics() {
         game = new Game();
 
         game.init();
-
+        console.log(game);
     }
 
-    //function mainLoop() {
+    function mainLoop() {
+        //console.log("running time" + runningTime);
+        timeOne = performance.now();
 
-    //    timeOne = performance.now();
+        //console.log(deltaTime);
 
-    //    //console.log(deltaTime);
+        game.updateModel();
 
-    //    game.updateModel();
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);//clears frame
 
-    //    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);//clears frame
-    //    game.composeFrame();
-    //    timeTwo = performance.now();
-    //    deltaTime = timeTwo - timeOne;
-    //    requestAnimationFrame(mainLoop);
-    //}
-    //requestAnimationFrame(mainLoop);
+
+        game.composeFrame();
+
+        
+        timeTwo = performance.now();
+        deltaTime = timeTwo - timeOne;
+        runningTime += deltaTime*0.001;
+        requestAnimationFrame(mainLoop);
+    }
+    requestAnimationFrame(mainLoop);
 
 
 }

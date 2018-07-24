@@ -39,20 +39,17 @@ app.get('/assets/main.js', function (req, res) {
 
 io.on('connection', function (socket) {
     console.log('a user connected');
-
     socket.on('disconnect', function () {
-        console.log('user disconnected');
+        console.log("user dc");
     });
 
-    socket.on('chat message', function (msg) {
-        io.emit('chat message', msg);
+    socket.on('frame', function (msg) {
+        console.log('message: ' + msg);
     });
-
-
-
-
 
 });
+
+
 
 
 
@@ -65,6 +62,9 @@ http.listen(8080, function () {
 
 var canvasDem = 800;
 var canvasCells = 10;
+
+
+var frame = 0;
 
 function Game() {
 
@@ -137,9 +137,10 @@ function Game() {
                 units.splice(i, 1);
             }
         }
+
+        frame += 1;
+
     }
-
-
 }
 
 

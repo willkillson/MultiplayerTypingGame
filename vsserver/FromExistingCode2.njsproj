@@ -21,6 +21,14 @@
     <Content Include="index.html" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
+    <Compile Include="assets\Dictionary.js" />
+    <Compile Include="assets\Game.js" />
+    <Compile Include="assets\Graphics.js" />
+    <Compile Include="assets\howler.js" />
+    <Compile Include="assets\Keyboard.js" />
+    <Compile Include="assets\main.js" />
+    <Compile Include="assets\Sound.js" />
+    <Compile Include="assets\WilkiMath.js" />
     <Compile Include="index.js" />
   </ItemGroup>
   <ItemGroup>
