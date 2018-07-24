@@ -1,4 +1,43 @@
 ﻿
+/*NOTES
+ * 
+ * Abilities
+ * /////////////////
+ * -Auto tab tracking
+ * -chance to
+ * -chain breaking forgiveness
+ * 
+ * Elemental Damage - these elements are based on chinese five element philosophy
+ * //https://upload.wikimedia.org/wikipedia/commons/0/07/FiveElementsCycleBalanceImbalance.jpg
+ * -wood
+ * -water
+ * -fire
+ * -earth
+ * -metal
+ * 
+ * Stats
+ * //////
+ * -shield
+ * -armor
+ * -more health
+ * -critical%
+ * -damage
+ * -chain multiplier (might go hand in hand with critical%)
+ * 
+ * Resistances
+ * -wood
+ * -water
+ * -metal
+ * -earth
+ * -fire
+ * 
+ * 
+ */
+
+
+
+
+
 function Game() {
 
 
@@ -18,7 +57,7 @@ function Game() {
             units.push(unit);
         }
 
-        player.init(600 / 2, 800 / 2, 600, 800);
+        player.init(50, 50 , 600, 800);
         ui.init();
         level.init();
 
@@ -135,7 +174,6 @@ function Level() {
         ctx.lineTo(0, 800);
         ctx.moveTo(0, 0);
         ctx.lineTo(0, 800);
-
         ctx.stroke();
 
 
@@ -153,10 +191,13 @@ function Unit() {
     this.position;
     this.velocity;
 
+    this.radius;
     this.boundx;
     this.boundy;
 
     this.isAlive;
+
+
 
     this.init = function(x,y,velx,vely,name,bx,by){
         this.position = new Vec2(x, y);
@@ -168,6 +209,7 @@ function Unit() {
         this.health = 2;//HARDCODE
         this.currentHealth = this.health;
         this.isAlive = 1;//HARDCODE
+        this.radius = 25;
 
 
         this.dictionary = new Array();
@@ -186,20 +228,20 @@ function Unit() {
         this.position.y += this.velocity.y;
 
         //bounds x right side
-        if (this.position.x >= this.boundx) {
-            this.position.x = this.boundx;
+        if (this.position.x >= this.boundx - this.radius) {
+            this.position.x = this.boundx - this.radius;
             this.velocity.x = this.velocity.x*-1;
         }
-        if (this.position.x <= 0) {
-            this.position.x = 0;
+        if (this.position.x - this.radius <= 0) {
+            this.position.x = this.radius;
             this.velocity.x = this.velocity.x * -1;
         }
-        if (this.position.y >= this.boundy) {
-            this.position.y = this.boundy;
+        if (this.position.y + this.radius >= this.boundy) {
+            this.position.y = this.boundy - this.radius;
             this.velocity.y = this.velocity.y * -1;
         }
-        if (this.position.y <= 0) {
-            this.position.y = 0;
+        if (this.position.y - this.radius <= 0) {
+            this.position.y = this.radius;
             this.velocity.y = this.velocity.y * -1;
         }
 
@@ -224,7 +266,7 @@ function Unit() {
         ctx.beginPath();
         ctx.strokeStyle = 'red';
         ctx.beginPath();
-        ctx.arc(this.position.x, this.position.y, 25, 0, 2 * Math.PI);
+        ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
         ctx.stroke();
     }
 
@@ -285,19 +327,19 @@ function Player() {
         switch (processText) {
             case "_PlayerMovement_right":
                 processText = "";
-                this.position.x += 40;
+                this.position.x += 50;
                 break;
             case "_PlayerMovement_up":
                 processText = "";
-                this.position.y -= 40;
+                this.position.y -= 50;
                 break;
             case "_PlayerMovement_down":
                 processText = "";
-                this.position.y += 40;
+                this.position.y += 50;
                 break;
             case "_PlayerMovement_left":
                 processText = "";
-                this.position.x -= 40;
+                this.position.x -= 50;
                 break;
             case "FIRE":
                 processText = "";
