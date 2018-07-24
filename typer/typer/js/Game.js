@@ -1,13 +1,12 @@
 ﻿
 function Game() {
 
-    var level = 1;
-    var inputTextSize = 30;
-    var textPos = new Vec2(100 ,700);
+
     var units = new Array();
 
     var player = new Player();
-
+    var level = new Level();
+    var ui = new UserInterface();
 
     this.init = function () {
         //this.canvasHeight = 800;
@@ -20,6 +19,8 @@ function Game() {
         }
 
         player.init(600 / 2, 800 / 2, 600, 800);
+        ui.init();
+        level.init();
 
 
 
@@ -45,10 +46,10 @@ function Game() {
 
 
         if (units.length == 0) {
-            level++;
-            for (let i = 0; i < level; i++) {
+            level.level++;
+            for (let i = 0; i < level.level; i++) {
                 let unit = new Unit();
-                unit.init(600 * Math.random(), 800 * Math.random(), level * Math.random(), level* Math.random(), "Q" + i, 600, 800);
+                unit.init(600 * Math.random(), 800 * Math.random(), level.level * Math.random(), level.level* Math.random(), "Q" + i, 600, 800);
                 units.push(unit);
             }
         }
@@ -70,21 +71,15 @@ function Game() {
         }
 
 
+
         player.draw();
+        ui.draw();
+        level.draw();
 
 
-        //keyboardInput
-        ctx.beginPath();
-        ctx.font = "" + inputTextSize+"px Arial";
-        ctx.fillStyle = "blue";
-        ctx.fillText(inputTextValue, textPos.x, textPos.y);
 
-        //leveldisplay
-        ctx.beginPath();
-        ctx.font = "" + inputTextSize + "px Arial";
-        ctx.fillStyle = "red";
-        ctx.fillText("Level - " + level, 450, 50);
-        
+
+
     }
 
 }
@@ -94,6 +89,47 @@ function Game() {
 
 //GameObjects
 
+function UserInterface() {
+    this.inputTextSize;
+    this.textPos = new Vec2(100, 700);
+
+    this.init = function () {
+        this.inputTextSize = 30;
+
+    }
+    this.draw = function(){
+
+        //keyboardInput
+        ctx.beginPath();
+        ctx.font = "" + this.inputTextSize + "px Arial";
+        ctx.fillStyle = "blue";
+        ctx.fillText(inputTextValue, this.textPos.x, this.textPos.y);
+
+    }
+}
+
+function Level() {
+    this.level;
+    this.textSizeLevelDisplay;
+
+    this.init = function (levelNum) {
+        this.textSizeLevelDisplay = 30;
+        this.level = 1;
+    }
+
+    this.draw = function(){
+        //leveldisplay
+        ctx.beginPath();
+        ctx.font = "" + this.textSizeLevelDisplay + "px Arial";
+        ctx.fillStyle = "red";
+        ctx.fillText("Level - " + this.level, 450, 50);
+
+        //boundary
+        ctx.beginPath();
+
+
+    }
+}
 
 function Unit() {
 
@@ -282,7 +318,9 @@ function Player() {
     }
     this.draw = function () {
 
-        if (this.target !=null) {
+        if (this.target != null) {
+
+            //display target line
             ctx.beginPath();
             ctx.strokeStyle = 'purple';
             ctx.moveTo(this.position.x, this.position.y);
