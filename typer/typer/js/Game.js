@@ -53,14 +53,13 @@
 
 
 
-var canvasDem = 900;
-var canvasCells = 15;
+var canvasDem = 800;
+var canvasCells = 10;
 
 function Game() {
 
     
     var units = new Array();
-
     var player = new Player();
     var level = new Level();
     var ui = new UserInterface();
@@ -68,13 +67,7 @@ function Game() {
 
     this.init = function () {
 
-        for (let i = 0; i < 1; i++) {
-            let unit = new Unit();
-            unit.init(canvasDem*Math.random(), canvasDem*Math.random(), 1*Math.random(), 1*Math.random(),"Q"+i,canvasDem,canvasDem);
-            units.push(unit);
-        }
-
-        player.init(canvasDem / canvasCells/2, canvasDem / canvasCells/2 , canvasDem, canvasDem);
+        player.init(canvasDem / canvasCells / 2, canvasDem / canvasCells / 2, canvasDem, canvasDem);
         ui.init();
         level.init();
 
@@ -84,40 +77,56 @@ function Game() {
     this.updateModel = function () {
 
 
-        for (let i = 0; i < units.length; i++) {
-
-    
-            if (units[i].name == processText) {
-                player.target =  units[i];
-                //console.log("Killing " + units[i].name);
-                //squish.play();
-                processText = "";
-      
-                //units.splice(i, 1);
-
-            }
-            units[i].update();
+        if (player.isAlive == 0) {
+            level.level = 0;
+            units = [];
+            player.respawn();
         }
-        player.update();
 
-
+        //remake new units and increase level
         if (units.length == 0) {
             level.level++;
             for (let i = 0; i < level.level; i++) {
                 let unit = new Unit();
-                unit.init(canvasDem * Math.random(), canvasDem * Math.random(), level.level * Math.random(), level.level* Math.random(), "Q" + i, canvasDem, canvasDem);
+                unit.init(canvasDem * Math.random(), canvasDem * Math.random(), level.level * Math.random(), level.level * Math.random(), "Q" + i, canvasDem, canvasDem);
                 units.push(unit);
             }
         }
 
 
 
+
+
+        //process input and check against units
+        for (let i = 0; i < units.length; i++) {
+            if (units[i].name == processText) {
+                player.target =  units[i];
+                processText = "";
+            }
+            units[i].update();
+        }
+
+
+        player.update();
+
+
+
+
+
+        //check to see if any units are colliding with the player
+        for (let i = 0; i < units.length; i++) {
+            if (units[i].checkIfHittingPlayer(player)) {
+                units[i].isAlive = 0;
+                console.log(player);
+                player.takeDamage(2);
+                console.log(player);
+            }
+        }
+
+        //check to see if any units have died and remove them
         for (let i = 0; i < units.length; i++) {
             if (units[i].isAlive == 0) {
-
-
                 units.splice(i, 1);
-
             }
         }
     }
@@ -172,7 +181,6 @@ function Level() {
         this.textSizeLevelDisplay = 30;
         this.level = 1;
     }
-
     this.draw = function(){
         //leveldisplay
         ctx.beginPath();
@@ -220,6 +228,10 @@ function Level() {
 
 
     }
+
+    this.restart = function () {
+        this.level = 1;
+    }
 }
 
 function Unit() {
@@ -243,7 +255,7 @@ function Unit() {
 
     this.init = function(x,y,velx,vely,name,bx,by){
         this.position = new Vec2(x, y);
-        this.velocity = new Vec2(velx, vely-10);//HARDCODED
+        this.velocity = new Vec2(velx, vely);
         this.name = name;
         this.boundx = bx;
         this.boundy = by;
@@ -263,7 +275,6 @@ function Unit() {
     this.update = function () {
         if (this.currentHealth <= 0) {
             this.isAlive = 0;
-            console.log(this.name +" is dead");
         }
 
         this.position.x += this.velocity.x;
@@ -279,7 +290,7 @@ function Unit() {
             this.velocity.x = this.velocity.x * -1;
         }
         //south check
-        if (this.position.y  >= this.boundy) {
+        if (this.position.y >= this.boundy - this.radius) {
             this.position.y = this.boundy - this.radius;
             this.velocity.y = this.velocity.y * -1;
         }
@@ -290,6 +301,7 @@ function Unit() {
         }
         //console.log("x,y(" + this.position.x +", " + this.position.y+")");
 
+  
     }
     this.draw = function () {
 
@@ -315,9 +327,24 @@ function Unit() {
         ctx.stroke();
     }
 
+    this.checkIfHittingPlayer = function (player) {
+
+
+        if ((player.position.x + player.radius > this.position.x) && (player.position.x < player.radius + this.position.x)) {
+            if ((player.position.y + player.radius > this.position.y) && (player.position.y < player.radius + this.position.y)) {
+                return 1;
+            }
+
+        }
+        return 0;
+
+    }
+
 }
 
 function Player() {
+
+    this.spawnPosition;
     this.position;
 
     this.currentHealth;
@@ -325,6 +352,7 @@ function Player() {
     
     this.boundx;
     this.boundy;
+    this.radius;
 
     this.target = null;
 
@@ -333,12 +361,15 @@ function Player() {
 
 
     this.init = function (x, y, bx, by) {
-        this.position = new Vec2(x, y);
+        this.spawnPosition = new Vec2(x, y);
+        this.position = this.spawnPosition;
         this.boundx = bx;
         this.boundy = by;
 
         this.health = 10;
         this.currentHealth = this.health;
+
+        this.radius = canvasDem / canvasCells;
 
         this.isAlive = 1;
     }
@@ -408,7 +439,6 @@ function Player() {
         //}
 
     }
-
     this.draw = function () {
 
         if (this.target != null) {
@@ -449,7 +479,18 @@ function Player() {
         ctx.arc(this.position.x, this.position.y, 25, 0, 2 * Math.PI);
         ctx.stroke();
     }
-
+    this.takeDamage = function (amount) {
+        this.currentHealth -= amount;
+        if (this.currentHealth <= 0) {
+            this.isAlive = 0;
+        }
+    }
+    this.respawn = function () {
+        this.position = this.spawnPosition;
+        this.isAlive = 1;
+        this.currentHealth = this.health;
+        this.target = null;
+    }
 }
 
 //Dictionary
