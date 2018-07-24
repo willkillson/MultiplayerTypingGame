@@ -162,6 +162,15 @@ function UserInterface() {
     }
     this.draw = function () {
 
+        //tutorial
+        ctx.beginPath();
+        ctx.font = "" + this.textSizeLevelDisplay + "px Arial";
+        ctx.fillStyle = "black";
+        ctx.fillText("Use the arrow keys to move.", 850, 100);
+        ctx.fillText("Type q0 or q1 to target enemies.", 850, 150);
+        ctx.fillText("Once targeting, type the word above your character.", 850, 200);
+        ctx.fillText("Try not to get hit.", 850, 250);
+
         //keyboard background
         ctx.beginPath();
         ctx.rect(this.textPos.x, this.textPos.y-35, 300, 50);
@@ -414,20 +423,32 @@ function Player() {
         switch (processText) {
             case "_PlayerMovement_right":
                 processText = "";
-
-                this.position.x += canvasDem / canvasCells;
+                if (this.position.x != 760) {
+                    this.position.x += canvasDem / canvasCells;
+                }
+         
+   
                 break;
             case "_PlayerMovement_up":
                 processText = "";
-                this.position.y -= canvasDem / canvasCells;
+                if (this.position.y != 40) {
+                    this.position.y -= canvasDem / canvasCells;
+                }
+     
                 break;
             case "_PlayerMovement_down":
                 processText = "";
-                this.position.y += canvasDem / canvasCells;
+                if (this.position.y != 760) {
+                    this.position.y += canvasDem / canvasCells;
+                }
+      
                 break;
             case "_PlayerMovement_left":
                 processText = "";
-                this.position.x -= canvasDem / canvasCells;
+                if (this.position.x != 40) {
+                    this.position.x -= canvasDem / canvasCells;
+                }
+      
                 break;
             case "FIRE":
                 processText = "";

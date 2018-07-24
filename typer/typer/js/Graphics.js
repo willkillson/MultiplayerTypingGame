@@ -4,7 +4,7 @@ var ctx = canvas.getContext('2d');
 function Graphics() {
 
     this.canvasHeight = 1000;
-    this.canvasWidth = 1000;
+    this.canvasWidth = 1500;
 
     var totalFrames;
 
