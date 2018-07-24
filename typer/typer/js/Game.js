@@ -166,10 +166,11 @@ function UserInterface() {
         ctx.beginPath();
         ctx.font = "" + this.textSizeLevelDisplay + "px Arial";
         ctx.fillStyle = "black";
-        ctx.fillText("Use the arrow keys to move.", 850, 100);
-        ctx.fillText("Type q0 or q1 to target enemies.", 850, 150);
-        ctx.fillText("Once targeting, type the word above your character.", 850, 200);
-        ctx.fillText("Try not to get hit.", 850, 250);
+        ctx.fillText("This is a typing game.", 850, 100);
+        ctx.fillText("Use the arrow keys to move.", 850, 150);
+        ctx.fillText("Type q0 or q1 to target enemies.", 850, 200);
+        ctx.fillText("Once targeting, type the word above your character.", 850, 250);
+        ctx.fillText("Try not to get hit.", 850, 300);
 
         //keyboard background
         ctx.beginPath();
