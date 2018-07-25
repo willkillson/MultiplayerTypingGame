@@ -427,7 +427,7 @@ function Player() {
         this.health = 10;
         this.currentHealth = this.health;
 
-        this.radius = canvasDem / canvasCells;
+        this.radius = (canvasDem / canvasCells)/2;
 
         this.isAlive = 1;
     }
@@ -559,7 +559,7 @@ function Player() {
         //display character avatar
         ctx.fillStyle = 'green';
         ctx.beginPath();
-        ctx.arc(this.position.x, this.position.y, 25, 0, 2 * Math.PI);
+        ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
         ctx.closePath();
         ctx.fill()
         //display health
