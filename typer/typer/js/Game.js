@@ -169,7 +169,7 @@ function UserInterface() {
         ctx.fillText("This is a typing game.", 850, 100);
         ctx.fillText("1. Use the arrow keys to move.", 850, 150);
         ctx.fillText("2. Type q0 or q1 to target enemies.", 850, 200);
-        ctx.fillText("3. Then type ehe word above your green circle.", 850, 250);
+        ctx.fillText("3. Then type the word above your green circle.", 850, 250);
         ctx.fillText("4. Try not to get hit.", 850, 300);
         ctx.fillText("5. Holding left shift will allow you", 850, 350);
         ctx.fillText("    to move with WASD.", 850, 400);
