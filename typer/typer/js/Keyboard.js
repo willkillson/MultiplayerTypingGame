@@ -2,6 +2,8 @@
 var processText = "";
 window.onkeyup = keyup;//creates a listener for when you press a key
 
+window.onkeydown = keydown;
+
 function keyup(e) {
 
     if (e.keyCode == 13) {
@@ -33,8 +35,19 @@ function keyup(e) {
         return;
     }
 
-    fire.play();
-    console.log("Playing fire sound");
-    inputTextValue += String.fromCharCode(e.keyCode);
+    if ((e.keyCode >= 48) && (e.keyCode <= 90)) {
+        fire.play();
+        inputTextValue += String.fromCharCode(e.keyCode);
+
+    }
+
+
+}
+
+function keydown(e) {
+
+
+
+
 
 }
