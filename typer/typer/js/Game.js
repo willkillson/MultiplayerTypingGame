@@ -172,7 +172,7 @@ function UserInterface() {
         ctx.fillText("3. Then type the word above your green circle.", 850, 250);
         ctx.fillText("4. Try not to get hit.", 850, 300);
         ctx.fillText("5. Holding left shift will allow you", 850, 350);
-        ctx.fillText("    to move with WASD.", 850, 400);
+        ctx.fillText("    to move with WASD keys.", 850, 400);
         //keyboard background
         ctx.beginPath();
         ctx.rect(this.textPos.x, this.textPos.y-35, 300, 50);
