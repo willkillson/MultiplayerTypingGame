@@ -427,7 +427,7 @@ function Player() {
         this.health = 10;
         this.currentHealth = this.health;
 
-        this.radius = (canvasDem / canvasCells)/2;
+        this.radius = (canvasDem / canvasCells)/4;
 
         this.isAlive = 1;
     }
