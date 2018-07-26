@@ -1,11 +1,8 @@
 
-//wilkimath.js//////////////////////////
-function Vec2(x, y) {
-    this.x = x;
-    this.y = y;
-}
+console.log("Dictionary.js loaded");
 
-//Dictionary.js/////////////////////////
+//Dictionary
+
 var dictionary = new Array();
 
 dictionary.push("grouchy");
@@ -75,9 +72,20 @@ dictionary.push("loving");
 for (let i = 0; i < dictionary.length; i++) {
     dictionary[i] = dictionary[i].toUpperCase();
 }
+//require('/assets/Dictionary.js')
+//wilkimath.js//////////////////////////
+//function Vec2(x, y) {
+//    this.x = x;
+//    this.y = y;
+//}
 
+function Vec2(x, y) {
+    this.x = x;
+    this.y = y;
+}
+//const WilkiMath = require('./assets/WilkiMath');
 
-
+//const dictionary = require('/assets/Dictionary');
 
 var app = require('express')();
 var http = require('http').Server(app);
@@ -90,14 +98,14 @@ app.get('/', function (req, res) {
 app.get('/asset/Dictionary.js', function (req, res) {
     res.sendFile(__dirname + '/assets/Dictionary.js');
 });
+app.get('/assets/WilkiMath.js', function (req, res) {
+    res.sendFile(__dirname + '/assets/WilkiMath.js');
+});
 app.get('/assets/howler.js', function (req, res) {
     res.sendFile(__dirname + '/assets/howler.js');
 });
 app.get('/assets/Sound.js', function (req, res) {
     res.sendFile(__dirname + '/assets/Sound.js');
-});
-app.get('/assets/WilkiMath.js', function (req, res) {
-    res.sendFile(__dirname + '/assets/WilkiMath.js');
 });
 app.get('/assets/Keyboard.js', function (req, res) {
     res.sendFile(__dirname + '/assets/Keyboard.js');
