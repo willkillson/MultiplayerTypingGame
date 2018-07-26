@@ -72,12 +72,7 @@ dictionary.push("loving");
 for (let i = 0; i < dictionary.length; i++) {
     dictionary[i] = dictionary[i].toUpperCase();
 }
-//require('/assets/Dictionary.js')
-//wilkimath.js//////////////////////////
-//function Vec2(x, y) {
-//    this.x = x;
-//    this.y = y;
-//}
+
 
 function Vec2(x, y) {
     this.x = x;
@@ -128,6 +123,7 @@ io.on('connection', function (socket) {
 
     setInterval(function () {
         socket.emit('init', { unit });
+        socket.emit('message', { connections });
     }, 50);
 
     connections++;

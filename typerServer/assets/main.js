@@ -12,12 +12,15 @@ ctx.canvas.height = height;
 
 var message = "Nothing";
 
-var unit=null;
+var unit = null;
+var currentConnections = null;
+
 socket.on('init', function (data) {
-
     unit = data;
+});
 
- 
+socket.on('message', function (data) {
+    currentConnections = data;
 
 });
 
@@ -32,7 +35,15 @@ function drawUnit(x,y,radius,name) {
     ctx.beginPath();
     ctx.font = "20px Arial";
     ctx.fillStyle = `rgba(0, 0, 0, 0.5)`;
-    ctx.fillText(name, x-170 , y - 30);
+    ctx.fillText(name, x - 170, y - 30);
+
+    if (currentConnections != null) {
+        ctx.beginPath();
+        ctx.font = "20px Arial";
+        ctx.fillStyle = `rgba(0,255, 0, 0.5)`;
+        ctx.fillText("Total connections - " + currentConnections.connections, x - 100, y - 50);
+    }
+
 
 }
 
@@ -57,7 +68,6 @@ function Graphics() {
             drawUnit(unit.unit.position.x, unit.unit.position.y, unit.unit.radius, unit.unit.name);
   
         }
-
 
 
         //boundary
