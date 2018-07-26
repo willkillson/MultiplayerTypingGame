@@ -1,7 +1,5 @@
 ﻿console.log("Game.js loaded");
 
-var socket = io();
-var x = 0;
 
 /*
  * GameDesign
@@ -147,14 +145,7 @@ function Game() {
 
        // socket.on('hello', x);
         
-        socket.emit('frame', 
-            x
-        );
-        
 
-
-
-        x++;
 
     }
     this.composeFrame = function () {

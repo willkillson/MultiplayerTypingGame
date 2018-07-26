@@ -1,10 +1,87 @@
+
+//wilkimath.js//////////////////////////
+function Vec2(x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+//Dictionary.js/////////////////////////
+var dictionary = new Array();
+
+dictionary.push("grouchy");
+dictionary.push("care");
+dictionary.push("match");
+dictionary.push("weary");
+dictionary.push("snails");
+dictionary.push("market");
+dictionary.push("mature");
+dictionary.push("lethal");
+dictionary.push("abortive");
+dictionary.push("poop");
+dictionary.push("crap");
+dictionary.push("pain");
+dictionary.push("skirt");
+dictionary.push("puzzled");
+dictionary.push("bump");
+dictionary.push("tail");
+dictionary.push("jazzy");
+dictionary.push("stick");
+dictionary.push("endurable");
+dictionary.push("black");
+dictionary.push("rural");
+dictionary.push("faithful");
+dictionary.push("cabbage");
+dictionary.push("crate");
+dictionary.push("talk");
+dictionary.push("guarded");
+dictionary.push("breakable");
+dictionary.push("harmonious");
+dictionary.push("furniture");
+dictionary.push("debonair");
+dictionary.push("thirsty");
+dictionary.push("planes");
+dictionary.push("change");
+dictionary.push("first");
+dictionary.push("bubble");
+dictionary.push("sister");
+dictionary.push("roof");
+dictionary.push("thought");
+dictionary.push("sparkling");
+dictionary.push("adjoining");
+dictionary.push("terrible");
+dictionary.push("launch");
+dictionary.push("comb");
+dictionary.push("foregoing");
+dictionary.push("skinny");
+dictionary.push("ten");
+dictionary.push("rice");
+dictionary.push("girls");
+dictionary.push("productive");
+dictionary.push("poke");
+dictionary.push("guard");
+dictionary.push("mass");
+dictionary.push("jail");
+dictionary.push("disappear");
+dictionary.push("letter");
+dictionary.push("flower");
+dictionary.push("idea");
+dictionary.push("furtive");
+dictionary.push("prickly");
+dictionary.push("capable");
+dictionary.push("seemly");
+dictionary.push("loving");
+
+
+for (let i = 0; i < dictionary.length; i++) {
+    dictionary[i] = dictionary[i].toUpperCase();
+}
+
+
+
+
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
-
-var game = new Game();
-
 
 
 app.get('/', function (req, res) {
@@ -35,21 +112,26 @@ app.get('/assets/main.js', function (req, res) {
     res.sendFile(__dirname + '/assets/main.js');
 });
 
-
+var unit = new Unit();
+unit.init(200, 200, 5, 5, "This ball is updateing via the webserver.", 800, 600);
 
 io.on('connection', function (socket) {
-    console.log('a user connected');
-    socket.on('disconnect', function () {
-        console.log("user dc");
-    });
+    socket.emit('init', {unit});
 
-    socket.on('frame', function (msg) {
-        console.log('message: ' + msg);
-    });
+    setInterval(function () {
+        socket.emit('init', { unit });
+    }, 50);
+
+    //console.log('a user connected');
+    //socket.on('disconnect', function () {
+    //    console.log("user dc");
+    //});
+
+    //socket.on('connect', function (msg) {
+    //    console.log('message:' + msg);
+    //});
 
 });
-
-
 
 
 
@@ -57,14 +139,6 @@ http.listen(8080, function () {
     console.log('listening on *:8080');
 });
 
-////////////////////////////////////////////////
-
-
-var canvasDem = 800;
-var canvasCells = 10;
-
-
-var frame = 0;
 
 function Game() {
 
@@ -143,7 +217,9 @@ function Game() {
     }
 }
 
-
+setInterval(function () {
+    unit.update();
+},100);
 
 
 //GameObjects
@@ -241,6 +317,7 @@ function Unit() {
 
 
     }
+
 
     //this.checkIfHittingPlayer = function (player) {
     //    if ((player.position.x + player.radius > this.position.x) && (player.position.x < player.radius + this.position.x)) {
@@ -396,80 +473,3 @@ function Player() {
 
 
 
-
-//wilkimath.js//////////////////////////
-function Vec2(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-//Dictionary.js/////////////////////////
-var dictionary = new Array();
-
-dictionary.push("grouchy");
-dictionary.push("care");
-dictionary.push("match");
-dictionary.push("weary");
-dictionary.push("snails");
-dictionary.push("market");
-dictionary.push("mature");
-dictionary.push("lethal");
-dictionary.push("abortive");
-dictionary.push("poop");
-dictionary.push("crap");
-dictionary.push("pain");
-dictionary.push("skirt");
-dictionary.push("puzzled");
-dictionary.push("bump");
-dictionary.push("tail");
-dictionary.push("jazzy");
-dictionary.push("stick");
-dictionary.push("endurable");
-dictionary.push("black");
-dictionary.push("rural");
-dictionary.push("faithful");
-dictionary.push("cabbage");
-dictionary.push("crate");
-dictionary.push("talk");
-dictionary.push("guarded");
-dictionary.push("breakable");
-dictionary.push("harmonious");
-dictionary.push("furniture");
-dictionary.push("debonair");
-dictionary.push("thirsty");
-dictionary.push("planes");
-dictionary.push("change");
-dictionary.push("first");
-dictionary.push("bubble");
-dictionary.push("sister");
-dictionary.push("roof");
-dictionary.push("thought");
-dictionary.push("sparkling");
-dictionary.push("adjoining");
-dictionary.push("terrible");
-dictionary.push("launch");
-dictionary.push("comb");
-dictionary.push("foregoing");
-dictionary.push("skinny");
-dictionary.push("ten");
-dictionary.push("rice");
-dictionary.push("girls");
-dictionary.push("productive");
-dictionary.push("poke");
-dictionary.push("guard");
-dictionary.push("mass");
-dictionary.push("jail");
-dictionary.push("disappear");
-dictionary.push("letter");
-dictionary.push("flower");
-dictionary.push("idea");
-dictionary.push("furtive");
-dictionary.push("prickly");
-dictionary.push("capable");
-dictionary.push("seemly");
-dictionary.push("loving");
-
-
-for (let i = 0; i < dictionary.length; i++) {
-    dictionary[i] = dictionary[i].toUpperCase();
-}
