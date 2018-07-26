@@ -68,7 +68,7 @@ function drawUnit(x, y, radius, name) {
 
     if (currentConnections != null) {
         ctx.beginPath();
-        ctx.fillStyle = `rgba(0,0, 0, 0.5)`;
+        ctx.fillStyle = `rgba(255,255, 255, 1)`;
         ctx.font = "20px Arial";
         ctx.fillText("MaxDifferenceClientServer x or y - " + highx + "," + highy + "", 10, 20);
         ctx.fillText("DifferenceClientServer - (" + Math.abs(Math.floor(posx) - newPosx) + "," + Math.abs(Math.floor(posy) - newPosy) + ")",10, 45);
@@ -120,7 +120,7 @@ function Graphics() {
 
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);//clears frame
 
-
+        drawBoundary();
         if ((posx != null) && (posy != null)) {
             updateUnit();
         }
@@ -133,9 +133,6 @@ function Graphics() {
   
         }
 
-
-
-        drawBoundary();
 
 
 
@@ -153,6 +150,11 @@ function Graphics() {
         ctx.lineTo(width, 0);
         ctx.lineTo(0, 0);
         ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, 800, 600);
+    
 
     }
 }
