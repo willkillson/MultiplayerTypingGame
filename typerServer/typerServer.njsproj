@@ -3,8 +3,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{91f82ffb-2f10-409b-ae27-173c1a3aaebd}</ProjectGuid>
-    <ProjectHome>..\server\</ProjectHome>
+    <ProjectGuid>{904aa21f-e38a-40b2-ad12-1bebc9476ca2}</ProjectGuid>
+    <ProjectHome />
     <ProjectView>ShowAllFiles</ProjectView>
     <StartupFile>index.js</StartupFile>
     <WorkingDirectory>.</WorkingDirectory>
@@ -13,7 +13,6 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
-    <StartWebBrowser>True</StartWebBrowser>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -21,6 +20,7 @@
     <Content Include="index.html" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
+    <Compile Include="index.js" />
     <Compile Include="assets\Dictionary.js" />
     <Compile Include="assets\Game.js" />
     <Compile Include="assets\Graphics.js" />
@@ -29,10 +29,10 @@
     <Compile Include="assets\main.js" />
     <Compile Include="assets\Sound.js" />
     <Compile Include="assets\WilkiMath.js" />
-    <Compile Include="index.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="assets\" />
+    <Folder Include="assets" />
+    <Folder Include="typerServer" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->
