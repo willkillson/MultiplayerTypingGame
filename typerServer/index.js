@@ -122,10 +122,16 @@ io.on('connection', function (socket) {
         socket.emit('init', { unit });
     }, 50);
 
-    //console.log('a user connected');
-    //socket.on('disconnect', function () {
-    //    console.log("user dc");
-    //});
+    connections++;
+
+    socket.on('disconnect', function () {
+        let t = new Date();
+        connections--;
+    });
+    socket.on('connect', function () {
+
+        console.log('a user connected');
+    });
 
     //socket.on('connect', function (msg) {
     //    console.log('message:' + msg);
@@ -140,11 +146,38 @@ http.listen(8080, function () {
 });
 
 
+
+
+
+
+
+
+
+setInterval(function () {
+    let t = new Date();
+    
+    if (connections != connectionsChange) {
+        console.log("ServerTime - " + t.getHours() + ":" + t.getMinutes());
+        console.log("Connections - " + connections);
+        connectionsChange = connections;
+    }
+
+}, 2000);
+
+
+var connections = 0;
+var connectionsChange = 0;
+var players = new Array();
+
+
+
+
+
 function Game() {
 
 
     var units = new Array();
-    //var player = new Player();
+ 
     var level = new Level();
     var ui = new UserInterface();
 
@@ -161,58 +194,61 @@ function Game() {
     this.updateModel = function () {
 
 
-        //if (player.isAlive == 0) {
-        //    level.level = 0;
-        //    units = [];
-        //    player.respawn();
-        //}
-
-        //remake new units and increase level
-        if (units.length == 0) {
-            level.level++;
-            for (let i = 0; i < level.level; i++) {
-                let unit = new Unit();
-                unit.init(canvasDem * Math.random(), canvasDem * Math.random(), level.level * Math.random(), level.level * Math.random(), "Q" + i, canvasDem, canvasDem);
-                units.push(unit);
-            }
-        }
 
 
 
+        ////if (player.isAlive == 0) {
+        ////    level.level = 0;
+        ////    units = [];
+        ////    player.respawn();
+        ////}
 
-
-        //process input and check against units
-        for (let i = 0; i < units.length; i++) {
-            if (units[i].name == processText) {
-                player.target = units[i];
-                processText = "";
-            }
-            units[i].update();
-        }
-
-
-        //player.update();
-
-
-
-
-
-        //check to see if any units are colliding with the player
-        //for (let i = 0; i < units.length; i++) {
-        //    if (units[i].checkIfHittingPlayer(player)) {
-        //        units[i].isAlive = 0;
-        //        player.takeDamage(2);
+        ////remake new units and increase level
+        //if (units.length == 0) {
+        //    level.level++;
+        //    for (let i = 0; i < level.level; i++) {
+        //        let unit = new Unit();
+        //        unit.init(canvasDem * Math.random(), canvasDem * Math.random(), level.level * Math.random(), level.level * Math.random(), "Q" + i, canvasDem, canvasDem);
+        //        units.push(unit);
         //    }
         //}
 
-        //check to see if any units have died and remove them
-        for (let i = 0; i < units.length; i++) {
-            if (units[i].isAlive == 0) {
-                units.splice(i, 1);
-            }
-        }
 
-        frame += 1;
+
+
+
+        ////process input and check against units
+        //for (let i = 0; i < units.length; i++) {
+        //    if (units[i].name == processText) {
+        //        player.target = units[i];
+        //        processText = "";
+        //    }
+        //    units[i].update();
+        //}
+
+
+        ////player.update();
+
+
+
+
+
+        ////check to see if any units are colliding with the player
+        ////for (let i = 0; i < units.length; i++) {
+        ////    if (units[i].checkIfHittingPlayer(player)) {
+        ////        units[i].isAlive = 0;
+        ////        player.takeDamage(2);
+        ////    }
+        ////}
+
+        ////check to see if any units have died and remove them
+        //for (let i = 0; i < units.length; i++) {
+        //    if (units[i].isAlive == 0) {
+        //        units.splice(i, 1);
+        //    }
+        //}
+
+        //frame += 1;
 
     }
 }
