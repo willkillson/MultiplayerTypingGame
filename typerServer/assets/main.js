@@ -1,6 +1,10 @@
 ﻿console.log("main.js loaded");
 var socket = io();
 
+//const Dictionary = require('./assets/Dictionary');
+//const Vec2 = require('./assets/WilkiMath');
+
+//var dictionary = new Dictionary();
 
 
 var canvas = document.querySelector('canvas');
@@ -15,8 +19,23 @@ var message = "Nothing";
 var unit = null;
 var currentConnections = null;
 
+
+var posx = null;
+var posy = null;
+
+var newPosx = null;
+var newPosy = null;
+
 socket.on('init', function (data) {
     unit = data;
+    newPosx = unit.unit.position.x;
+    newPosy = unit.unit.position.y;
+    if ((posx == null)&&(posy==null)) {
+        posx = newPosx;
+        posy = newPosy;
+
+    }
+
 });
 
 socket.on('message', function (data) {
@@ -24,27 +43,67 @@ socket.on('message', function (data) {
 
 });
 
-function drawUnit(x,y,radius,name) {
-    ctx.fillStyle = `rgba(249, 170, 0, 1)`;
+var highx = 0;
+var highy = 0;
+
+function drawUnit(x, y, radius, name) {
+
+
+
+    //server
+    ctx.fillStyle = `rgba(0,0, 255, 1)`;
     ctx.beginPath();
+    ctx.fillText("ServerPosition - (" + newPosx + "," + newPosy + ")", x - 100, y - 75);
+    ctx.arc(newPosx, newPosy, radius, 0, 2 * Math.PI);
+    ctx.closePath();
+    ctx.fill();
+
+    //client
+    ctx.fillStyle = `rgba(0,255, 0, 1)`;
+    ctx.beginPath();
+    ctx.fillText("ClientPosition - (" + Math.floor(x) + "," + Math.floor(y) + ")", x - 100, y - 100);
     ctx.arc(x, y,radius, 0, 2 * Math.PI);
     ctx.closePath();
     ctx.fill();
 
-    //display name
-    ctx.beginPath();
-    ctx.font = "20px Arial";
-    ctx.fillStyle = `rgba(0, 0, 0, 0.5)`;
-    ctx.fillText(name, x - 170, y - 30);
-
     if (currentConnections != null) {
         ctx.beginPath();
+        ctx.fillStyle = `rgba(0,0, 0, 0.5)`;
         ctx.font = "20px Arial";
-        ctx.fillStyle = `rgba(0,255, 0, 0.5)`;
-        ctx.fillText("Total connections - " + currentConnections.connections, x - 100, y - 50);
+        ctx.fillText("MaxDifferenceClientServer x or y - " + highx + "," + highy + "", 10, 20);
+        ctx.fillText("DifferenceClientServer - (" + Math.abs(Math.floor(posx) - newPosx) + "," + Math.abs(Math.floor(posy) - newPosy) + ")",10, 45);
+
+        if (Math.abs(Math.floor(posx) - newPosx) > highx) {
+            highx = Math.abs(Math.floor(posx) - newPosx);
+        }
+        if (Math.abs(Math.floor(posy) - newPosy) > highy) {
+            highy = Math.abs(Math.floor(posy) - newPosy);
+        }
+
+
     }
 
 
+}
+function updateUnit() {
+    var updateSpeed = 0.3;
+    if ((newPosx != posx) && (newPosy != posy)) {
+        if (newPosx < posx) {
+            posx -= updateSpeed;
+        }
+        if (newPosx > posx) {
+            posx += updateSpeed;
+        }
+        if (newPosy > posy) {
+            posy += updateSpeed;
+        }
+        if (newPosy < posy) {
+            posy -= updateSpeed;
+        }
+    }
+
+
+       
 }
 
 function Graphics() {
@@ -62,14 +121,29 @@ function Graphics() {
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);//clears frame
 
 
-        if (unit != null) {
+        if ((posx != null) && (posy != null)) {
+            updateUnit();
+        }
 
-      
-            drawUnit(unit.unit.position.x, unit.unit.position.y, unit.unit.radius, unit.unit.name);
+
+        if ((unit != null)) {
+
+            updateUnit();
+            drawUnit(posx, posy, unit.unit.radius, unit.unit.name);
   
         }
 
 
+
+        drawBoundary();
+
+
+
+        requestAnimationFrame(mainLoop);
+    }
+    requestAnimationFrame(mainLoop);
+
+    function drawBoundary() {
         //boundary
         ctx.beginPath();
         ctx.strokeStyle = 'brown';
@@ -80,12 +154,7 @@ function Graphics() {
         ctx.lineTo(0, 0);
         ctx.stroke();
 
-
-        requestAnimationFrame(mainLoop);
     }
-    requestAnimationFrame(mainLoop);
-
-
 }
 
 
