@@ -79,12 +79,6 @@ function Game() {
     this.updateModel = function () {
 
 
-        //if (player.isAlive == 0) {
-        //    level.level = 0;
-        //    units = [];
-        //    player.respawn();
-        //}
-
         //remake new units and increase level
         if (units.length == 0) {
             level.level++;
