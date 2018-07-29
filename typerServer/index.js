@@ -1,4 +1,4 @@
-
+const { performance } = require('perf_hooks');
 
 //Local modules
 const Dictionary = require('./assets/Dictionary');
@@ -46,7 +46,7 @@ var units = new Array();
 
 for (let i = 0; i < level; i++) {
     let unit = new Unit();
-    unit.init(Math.random() * 200, Math.random() * 200, Math.random()*10,  Math.random()*10, "Ball - " + i, 800, 600);
+    unit.init(Math.random() * 200, Math.random() * 200, Math.random()*50,  Math.random()*50, "Ball - " + i, 800, 600);
     units.push(unit);
 }
 
@@ -55,6 +55,7 @@ io.on('connection', function (socket) {
 
     setInterval(function () {
         socket.emit('init', { units });
+        socket.emit('message', { connections });
         let count = 0;
         for (let i = 0; i < units.length; i++) {
             if (units[i].isAlive === 0) {
@@ -66,6 +67,7 @@ io.on('connection', function (socket) {
         }
         if (units.length === 0) {
             level++;
+            console.log("Level - " + level);
             if (level >= 100) {
                 level = 1;
             }
@@ -81,7 +83,7 @@ io.on('connection', function (socket) {
     connections++;
 
     socket.on('kill', function (data) {
-        console.log("killing " + data);
+        //console.log("killing " + data);
         for (let i = 0; i < units.length; i++) {
             if (units[i].name === data) {
                 units[i].isAlive = 0;
@@ -91,8 +93,6 @@ io.on('connection', function (socket) {
     });
 
     socket.on('getupdate', () => {
-
-
 
     });
 
@@ -130,13 +130,26 @@ var connections = 0;
 var connectionsChange = 0;
 var players = new Array();
 
-setInterval(function () {
-    //update units
+
+
+var lastUpdate = Date.now();
+var now = 0
+var dt = 0;
+setInterval(() => {
+
+    now = Date.now();
+    dt = now - lastUpdate;
+    dt = dt * 0.01;
+    lastUpdate = now;
+
 
     for (let i = 0; i < units.length; i++) {
         units[i].update();
     }
-}, 100);
+}, 0);
+
+
+
 
 
 //GameObjects
@@ -187,8 +200,8 @@ function Unit() {
             this.isAlive = 0;
         }
 
-        this.position.x += this.velocity.x;
-        this.position.y += this.velocity.y;
+        this.position.x += this.velocity.x*dt;
+        this.position.y += this.velocity.y*dt;
 
         //bounds x right side
         if (this.position.x >= this.boundx - this.radius) {
@@ -225,12 +238,6 @@ function Unit() {
     //}
 
 }
-
-
-
-
-
-
 
 function Vec2(x, y) {
     this.x = x;
