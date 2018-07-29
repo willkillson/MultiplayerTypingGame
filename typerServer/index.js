@@ -46,9 +46,9 @@ var units = new Array();
 
 
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 40; i++) {
     let unit = new Unit();
-    unit.init(Math.random() * 200, Math.random() * 200, Math.random() * 5, Math.random() * 5, "Ball - " + i, 800, 600);
+    unit.init(Math.random() * 200, Math.random() * 200, Math.random()*10,  Math.random()*10, "Ball - " + i, 800, 600);
     units.push(unit);
 }
 
@@ -132,6 +132,7 @@ function Unit() {
 
     this.name;
     this.position;
+    this.newPosition;
     this.velocity;
 
     this.radius;
@@ -149,16 +150,18 @@ function Unit() {
         this.boundx = bx;
         this.boundy = by;
 
-        this.health = 2;//HARDCODE
+        this.newPosition = new Vec2(x, y);
+
+        //this.health = 2;//HARDCODE
         this.currentHealth = this.health;
-        this.isAlive = 1;//HARDCODE
+        //this.isAlive = 1;//HARDCODE
         this.radius = 25;
 
 
-        this.dictionary = new Array();
-        for (let i = 0; i < this.health; i++) {
-            this.dictionary.push(dictionary[Math.floor(dictionary.length * Math.random())]);
-        }
+        //this.dictionary = new Array();
+        //for (let i = 0; i < this.health; i++) {
+        //    this.dictionary.push(dictionary[Math.floor(dictionary.length * Math.random())]);
+        //}
 
     }
     this.update = function () {

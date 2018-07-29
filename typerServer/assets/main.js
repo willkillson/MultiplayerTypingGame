@@ -22,14 +22,19 @@ socket.on('init', function (data) {
         //search the arrays for proper updating, if we don't have a match add == 1
         add = 1;
         for (let j = 0; j < units.length; j++) {
-            if (units[j].name===data.units[i].name) {
-                units[j] = data.units[i];
+            if (units[j].name === data.units[i].name) {
+                units[j].newPosition.x = data.units[i].position.x;
+                units[j].newPosition.y = data.units[i].position.y;
+                units[j].velocity.x = data.units[i].velocity.x;
+                units[j].velocity.y = data.units[i].velocity.y;
                 add = 0;
                 //console.log("should never see this twice");
             }
         }
         if (add) {
-              console.log("should never see this twice");
+
+            console.log("Creating " + data.units[i].name);
+            console.log(data.units[i]);
             units.push(data.units[i]);
         }
 
@@ -42,26 +47,60 @@ socket.on('message', function (data) {
 });
 
 
+function updateUnit(unit) {
+    var updateSpeed = 0.06;
+    if ((unit.newPosition.x != unit.position.x) && (unit.newPosition.y != unit.position.y)) {
+        if (unit.newPosition.x > unit.position.x) {
+            unit.position.x += Math.abs(unit.velocity.x * updateSpeed);
+        }
+        if (unit.newPosition.x < unit.position.x) {
+            unit.position.x -= Math.abs(unit.velocity.x * updateSpeed);
+        }
+        if (unit.newPosition.y < unit.position.y) {
+            unit.position.y -= Math.abs(unit.velocity.y*updateSpeed);
+        }
+        if (unit.newPosition.y > unit.position.y) {
+            unit.position.y += Math.abs(unit.velocity.y * updateSpeed);
+        }
+    }
+
+    //if update is so fucked lock step
+    let xdif = Math.abs(unit.position.x - unit.newPosition.x);
+    let ydif = Math.abs(unit.position.y - unit.newPosition.y);
+
+    if (ydif > 25) {
+
+        unit.position.y = unit.newPosition.y;
+
+    }
+    if (xdif > 25) {
+        unit.position.x = unit.newPosition.x;
+    }
+
+}
 function drawUnit(x) {
 
     //client
     ctx.font = "20px Arial";
-    ctx.fillStyle = `rgba(255,0, 0, 1)`;
+    ctx.fillStyle = `rgba(0,255, 0, 1)`;
     ctx.beginPath();
-    ctx.fillText(x.name, x.position.x - 40, x.position.y - 75);
-    ctx.fillText("Position - (" + Math.floor(x.position.x) + "," + Math.floor(x.position.y) + ")", x.position.x - 40, x.position.y - 50);
-    ctx.fillStyle = `rgba(0,255, 0, 0.3)`;
+    ctx.fillText(x.name, x.position.x - 40, x.position.y - 110);
+
+    ctx.fillText("ClientPosition - (" + Math.floor(x.position.x) + "," + Math.floor(x.position.y) + ")", x.position.x - 40, x.position.y - 50);
+    ctx.fillText("ServerPosition - (" + Math.floor(x.newPosition.x) + "," + Math.floor(x.newPosition.y) + ")", x.position.x - 40, x.position.y - 30);
+
+    ctx.fillStyle = `rgba(255,0, 0, 1)`;
     ctx.arc(x.position.x, x.position.y, x.radius, 0, 2 * Math.PI);
     ctx.closePath();
     ctx.fill();
 
-    ////server
-    //ctx.fillStyle = `rgba(0,0, 255, 1)`;
-    //ctx.beginPath();
-    //ctx.fillText("ServerPosition - (" + newPosx + "," + newPosy + ")", x - 100, y - 75);
-    //ctx.arc(newPosx, newPosy, radius, 0, 2 * Math.PI);
-    //ctx.closePath();
-    //ctx.fill();
+    //server
+    ctx.fillStyle = `rgba(255,255, 255, 1)`;
+    ctx.beginPath();
+
+    ctx.arc(x.newPosition.x, x.newPosition.y, x.radius/2, 0, 2 * Math.PI);
+    ctx.closePath();
+    ctx.fill();
 
     //if (currentConnections != null) {
     //    ctx.beginPath();
@@ -86,7 +125,11 @@ function drawUnit(x) {
 
 function Graphics() {
     this.init = function () {
-
+        setInterval(function () {
+            for (let i = 0; i < units.length; i++) {
+                updateUnit(units[i]);
+              }
+        }, 1);
     }
 
     function mainLoop() {
@@ -96,6 +139,7 @@ function Graphics() {
         //draw all the units
 
         for (let i = 0; i < units.length; i++) {
+       
             drawUnit(units[i]);
 
         }
