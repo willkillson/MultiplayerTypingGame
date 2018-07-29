@@ -1,4 +1,6 @@
-﻿console.log("main.js loaded");
+﻿//import { emit } from "cluster";
+
+console.log("main.js loaded");
 var socket = io();
 
 var canvas = document.querySelector('canvas');
@@ -33,8 +35,8 @@ socket.on('init', function (data) {
         }
         if (add) {
 
-            console.log("Creating " + data.units[i].name);
-            console.log(data.units[i]);
+            //console.log("Creating " + data.units[i].name);
+            //console.log(data.units[i]);
             units.push(data.units[i]);
         }
 
@@ -46,6 +48,8 @@ socket.on('message', function (data) {
     currentConnections = data;
 });
 
+var x = null;
+var y = null;
 
 function updateUnit(unit) {
     var updateSpeed = 0.06;
@@ -78,6 +82,7 @@ function updateUnit(unit) {
     }
 
 }
+
 function drawUnit(x) {
 
     //client
@@ -122,14 +127,61 @@ function drawUnit(x) {
 
 }
 
+function getNearCircle(posx,posy) {
+
+    for (let i = 0; i < units.length; i++) {
+        if ((units[i].position.x - units[i].radius < posx) && (posx < units[i].position.x + units[i].radius)) {
+            if ((units[i].position.y - units[i].radius < posy) && (posy < units[i].position.y + units[i].radius)) {
+
+                units[i].isAlive = 0;
+
+                socket.emit('kill', units[i].name);
+                //console.log(units[i]);
+            }
+        }
+    }
+
+}
+
+function removeDeadUnits() {
+
+
+    for (let i = 0; i < units.length; i++) {
+        if (units[i].isAlive === 0) {
+            units.splice(i, 1);
+        }
+    }
+}
+
+document.onmousemove = function (e) {
+    var event = e || window.event;
+    x = event.clientX;
+    y = event.clientY;
+
+}
 
 function Graphics() {
     this.init = function () {
-        setInterval(function () {
+
+
+
+        setInterval(function (e) {
+
+
             for (let i = 0; i < units.length; i++) {
                 updateUnit(units[i]);
-              }
+            }
+
+            getNearCircle(x, y);
+            removeDeadUnits();
+            //console.log("("+x+","+y+")");
+
+
         }, 1);
+
+
+
+
     }
 
     function mainLoop() {

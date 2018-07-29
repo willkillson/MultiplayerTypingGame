@@ -2,7 +2,7 @@
 
 //Local modules
 const Dictionary = require('./assets/Dictionary');
-const Vec2 = require('./assets/WilkiMath');
+//const Vec2 = require('./assets/WilkiMath');
 var dictionary = new Dictionary();
 
 //imported modules
@@ -40,13 +40,11 @@ app.get('/assets/main.js', function (req, res) {
 });
 
 
-
+var level = 1;
 
 var units = new Array();
 
-
-
-for (let i = 0; i < 40; i++) {
+for (let i = 0; i < level; i++) {
     let unit = new Unit();
     unit.init(Math.random() * 200, Math.random() * 200, Math.random()*10,  Math.random()*10, "Ball - " + i, 800, 600);
     units.push(unit);
@@ -63,13 +61,26 @@ io.on('connection', function (socket) {
     connections++;
 
     socket.on('kill', function (data) {
+        //console.log("killing " + data);
+        for (let i = 0; i < units.length; i++) {
 
-        for (let i = 0; i < units.lenght; i++) {
             if (units[i].name === data) {
-                array.splace(i, 1);
+                //console.log("killing " + units[i].name);
+                units.splice(i, 1);
+    
             }
         }
-
+        if (units.length === 0) {
+            level++;
+            if (level >= 100) {
+                level = 1;
+            }
+            for (let i = 0; i < level; i++) {
+                let unit = new Unit();
+                unit.init(Math.random() * 800, Math.random() * 600, Math.random() * 10, Math.random() * 10, "Ball - " + i, 800, 600);
+                units.push(unit);
+            }
+        }
     });
 
     socket.on('getupdate', () => {
@@ -154,7 +165,7 @@ function Unit() {
 
         //this.health = 2;//HARDCODE
         this.currentHealth = this.health;
-        //this.isAlive = 1;//HARDCODE
+        this.isAlive = 1;//HARDCODE
         this.radius = 25;
 
 
@@ -213,6 +224,11 @@ function Unit() {
 
 
 
+
+function Vec2(x, y) {
+    this.x = x;
+    this.y = y;
+}
 
 
 

@@ -2,10 +2,7 @@
 
 
 
-    function Vec2(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-
-
-module.exports = Vec2;
+function Vec2(x, y) {
+    this.x = x;
+    this.y = y;
+}
