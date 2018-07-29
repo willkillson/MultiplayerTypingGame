@@ -13,8 +13,6 @@ ctx.canvas.height = height;
 var currentConnections = null;
 
 var units = new Array();
-var newPoses = new Array();
-
 
 socket.on('init', function (data) {
 
@@ -30,6 +28,8 @@ socket.on('init', function (data) {
                 units[j].velocity.x = data.units[i].velocity.x;
                 units[j].velocity.y = data.units[i].velocity.y;
                 units[j].isAlive = data.units[i].isAlive;
+        
+                removeDeadUnits();
                 add = 0;
                 //console.log("should never see this twice");
             }
@@ -186,7 +186,7 @@ function Graphics() {
             }
 
             getNearCircle(x, y);
-            removeDeadUnits();
+     
             //console.log("("+x+","+y+")");
 
 
@@ -204,8 +204,11 @@ function Graphics() {
         //draw all the units
 
         for (let i = 0; i < units.length; i++) {
-       
-            drawUnit(units[i]);
+
+            if (units[i].isAlive) {
+                drawUnit(units[i]);
+            }
+
 
         }
 

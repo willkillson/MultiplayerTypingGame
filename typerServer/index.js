@@ -55,22 +55,24 @@ io.on('connection', function (socket) {
 
     setInterval(function () {
         socket.emit('init', { units });
+        let count = 0;
         for (let i = 0; i < units.length; i++) {
-
             if (units[i].isAlive === 0) {
-                units.splice(i, 1);
-
+                count++;
             }
-            if (units.length === 0) {
-                level++;
-                if (level >= 100) {
-                    level = 1;
-                }
-                for (let i = 0; i < level; i++) {
-                    let unit = new Unit();
-                    unit.init(Math.random() * 800, Math.random() * 600, Math.random() * 10, Math.random() * 10, "Ball - " + i, 800, 600);
-                    units.push(unit);
-                }
+        }
+        if (count === units.length){
+            units = new Array();
+        }
+        if (units.length === 0) {
+            level++;
+            if (level >= 100) {
+                level = 1;
+            }
+            for (let i = 0; i < level; i++) {
+                let unit = new Unit();
+                unit.init(Math.random() * 800, Math.random() * 600, Math.random() * 10, Math.random() * 10, "Ball - " + i, 800, 600);
+                units.push(unit);
             }
         }
 
@@ -79,14 +81,10 @@ io.on('connection', function (socket) {
     connections++;
 
     socket.on('kill', function (data) {
-        //console.log("killing " + data);
+        console.log("killing " + data);
         for (let i = 0; i < units.length; i++) {
-            
             if (units[i].name === data) {
-
                 units[i].isAlive = 0;
-                //units.splice(i, 1);
-    
             }
         }
 
