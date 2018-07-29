@@ -1,4 +1,4 @@
-# test
+# MultiplayerTypingGame
 Testbed for a typing game.
 
 [Hosted Singleplayer demo](https://willkillson.github.io/test/)
