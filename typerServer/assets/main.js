@@ -252,6 +252,12 @@ function Graphics() {
         ctx.fillText("Total connections - " + currentConnections,20, 40);
         ctx.fillText("Current Level - " + level, 20, 60);
 
+        //Info
+        ctx.beginPath();
+        ctx.font = "20px Consolas";
+        ctx.fillStyle = `rgba(255,255, 255, 0.2)`;
+        ctx.fillText("Click on the balls to kill the balls!", 800/2-200, 600/2);
+        ctx.fillText("Current Level - " + level, 20, 60);
     }
 }
 
