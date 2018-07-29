@@ -13,6 +13,7 @@ ctx.canvas.height = height;
 var currentConnections = null;
 
 var units = new Array();
+var level = 0;
 
 socket.on('init', function (data) {
 
@@ -46,7 +47,9 @@ socket.on('init', function (data) {
 });
 
 socket.on('message', function (data) {
-    currentConnections = data;
+    currentConnections = data.connections;
+    level = data.level;
+
 });
 
 var x = null;
@@ -218,20 +221,36 @@ function Graphics() {
 
 
     function drawBoundary() {
-        //boundary
-        ctx.beginPath();
-        ctx.strokeStyle = 'brown';
-        ctx.moveTo(0, 0);
-        ctx.lineTo(0, height);
-        ctx.lineTo(width, height);
-        ctx.lineTo(width, 0);
-        ctx.lineTo(0, 0);
-        ctx.stroke();
 
+        //background
         ctx.beginPath();
         ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, 800, 600);
-    
+        ctx.fillRect(20, 20, 800 - 20, 600 - 20);
+
+        //borders
+        var grdl = ctx.createLinearGradient(0, 0, 20, 600);
+        grdl.addColorStop(0, "teal");
+        grdl.addColorStop(1, "green");
+        //left bar
+        ctx.beginPath();
+        ctx.fillStyle = grdl;
+        ctx.fillRect(0, 0, 20, 600);
+        //topbar
+        ctx.fillStyle = grdl;
+        ctx.fillRect(0, 0, 800, 20);
+        //rightbar
+        ctx.fillStyle = grdl;
+        ctx.fillRect(800-20, 0, 20, 600);
+        //bottumbar
+        ctx.fillStyle = grdl;
+        ctx.fillRect(0, 600 - 20, 800, 20);
+
+        //level and connections display
+        ctx.beginPath();
+        ctx.font = "20px Consolas";
+        ctx.fillStyle = `rgba(255,255, 255, 1)`;
+        ctx.fillText("Total connections - " + currentConnections,20, 40);
+        ctx.fillText("Current Level - " + level, 20, 60);
 
     }
 }

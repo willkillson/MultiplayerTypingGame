@@ -55,7 +55,7 @@ io.on('connection', function (socket) {
 
     setInterval(function () {
         socket.emit('init', { units });
-        socket.emit('message', { connections });
+        socket.emit('message', { connections,level });
         let count = 0;
         for (let i = 0; i < units.length; i++) {
             if (units[i].isAlive === 0) {
