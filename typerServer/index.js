@@ -73,7 +73,7 @@ io.on('connection', function (socket) {
             }
             for (let i = 0; i < level; i++) {
                 let unit = new Unit();
-                unit.init(Math.random() * 800, Math.random() * 600, Math.random() * 10, Math.random() * 10, "Ball - " + i, 800, 600);
+                unit.init(Math.random() * 800, Math.random() * 600, Math.random() * level, Math.random() * level, "Ball - " + i, 800, 600);
                 units.push(unit);
             }
         }
