@@ -54,8 +54,26 @@ io.on('connection', function (socket) {
     socket.emit('init', { units });
 
     setInterval(function () {
-        socket.emit('init', { units  });
-        socket.emit('message', { connections });
+        socket.emit('init', { units });
+        for (let i = 0; i < units.length; i++) {
+
+            if (units[i].isAlive === 0) {
+                units.splice(i, 1);
+
+            }
+            if (units.length === 0) {
+                level++;
+                if (level >= 100) {
+                    level = 1;
+                }
+                for (let i = 0; i < level; i++) {
+                    let unit = new Unit();
+                    unit.init(Math.random() * 800, Math.random() * 600, Math.random() * 10, Math.random() * 10, "Ball - " + i, 800, 600);
+                    units.push(unit);
+                }
+            }
+        }
+
     }, 50);
 
     connections++;
@@ -63,24 +81,15 @@ io.on('connection', function (socket) {
     socket.on('kill', function (data) {
         //console.log("killing " + data);
         for (let i = 0; i < units.length; i++) {
-
+            
             if (units[i].name === data) {
-                //console.log("killing " + units[i].name);
-                units.splice(i, 1);
+
+                units[i].isAlive = 0;
+                //units.splice(i, 1);
     
             }
         }
-        if (units.length === 0) {
-            level++;
-            if (level >= 100) {
-                level = 1;
-            }
-            for (let i = 0; i < level; i++) {
-                let unit = new Unit();
-                unit.init(Math.random() * 800, Math.random() * 600, Math.random() * 10, Math.random() * 10, "Ball - " + i, 800, 600);
-                units.push(unit);
-            }
-        }
+
     });
 
     socket.on('getupdate', () => {

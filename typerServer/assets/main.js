@@ -29,6 +29,7 @@ socket.on('init', function (data) {
                 units[j].newPosition.y = data.units[i].position.y;
                 units[j].velocity.x = data.units[i].velocity.x;
                 units[j].velocity.y = data.units[i].velocity.y;
+                units[j].isAlive = data.units[i].isAlive;
                 add = 0;
                 //console.log("should never see this twice");
             }
@@ -50,6 +51,14 @@ socket.on('message', function (data) {
 
 var x = null;
 var y = null;
+
+var mouseDown = 0;
+document.body.onmousedown = function () {
+    ++mouseDown;
+}
+document.body.onmouseup = function () {
+    --mouseDown;
+}
 
 function updateUnit(unit) {
     var updateSpeed = 0.06;
@@ -86,12 +95,13 @@ function updateUnit(unit) {
 function drawUnit(x) {
 
     //client
-    ctx.font = "20px Arial";
+    ctx.font = "16px Consolas";
     ctx.fillStyle = `rgba(0,255, 0, 1)`;
     ctx.beginPath();
-    ctx.fillText(x.name, x.position.x - 40, x.position.y - 110);
+    ctx.fillText(x.name, x.position.x - 40, x.position.y - 70);
 
     ctx.fillText("ClientPosition - (" + Math.floor(x.position.x) + "," + Math.floor(x.position.y) + ")", x.position.x - 40, x.position.y - 50);
+    ctx.fillStyle = `rgba(255,255, 0, 1)`;
     ctx.fillText("ServerPosition - (" + Math.floor(x.newPosition.x) + "," + Math.floor(x.newPosition.y) + ")", x.position.x - 40, x.position.y - 30);
 
     ctx.fillStyle = `rgba(255,0, 0, 1)`;
@@ -102,7 +112,7 @@ function drawUnit(x) {
     //server
     ctx.fillStyle = `rgba(255,255, 255, 1)`;
     ctx.beginPath();
-
+    ctx.fillText("ServerPosition - (" + Math.floor(x.newPosition.x) + "," + Math.floor(x.newPosition.y) + ")", x.position.x - 40, x.position.y - 30);
     ctx.arc(x.newPosition.x, x.newPosition.y, x.radius/2, 0, 2 * Math.PI);
     ctx.closePath();
     ctx.fill();
@@ -132,11 +142,14 @@ function getNearCircle(posx,posy) {
     for (let i = 0; i < units.length; i++) {
         if ((units[i].position.x - units[i].radius < posx) && (posx < units[i].position.x + units[i].radius)) {
             if ((units[i].position.y - units[i].radius < posy) && (posy < units[i].position.y + units[i].radius)) {
+                if (mouseDown) {
+                    units[i].isAlive = 0;
 
-                units[i].isAlive = 0;
-
-                socket.emit('kill', units[i].name);
+                    socket.emit('kill', units[i].name);
                 //console.log(units[i]);
+
+
+                }
             }
         }
     }
