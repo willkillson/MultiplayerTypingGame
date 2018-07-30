@@ -68,7 +68,7 @@ io.on('connection', function (socket) {
         if (units.length === 0) {
             level++;
             console.log("Level - " + level);
-            if (level >= 100) {
+            if (level >= 10) {
                 level = 1;
             }
             for (let i = 0; i < level; i++) {
