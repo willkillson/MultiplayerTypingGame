@@ -1,7 +1,7 @@
 # MultiplayerTypingGame
 Testbed for a typing game.
 
-[Hosted Singleplayer demo](https://willkillson.github.io/test/)
+[Hosted Singleplayer demo](https://willkillson.github.io/MultiplayerTypingGame/typer/typer/index.html)
 
 [Hosted Multiplayer demo no typing implemented, just click to kill the balls.](http://testtyper-testtyper.1d35.starter-us-east-1.openshiftapps.com/)
 
